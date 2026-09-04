@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frugal Sol"
+  short_description: "Route work efficiently across Codex agents"
+  default_prompt: "Use $frugal-sol to orchestrate this task efficiently with Sol and bounded subagents."

@@ -1,0 +1,6 @@
+.DS_Store
+.frugal-sol/
+*.log
+.env
+.env.local
+
