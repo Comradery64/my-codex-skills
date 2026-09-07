@@ -39,8 +39,9 @@ isolation, or coverage.
 
 Good first delegation targets are read-heavy exploration, source gathering, log
 reduction, targeted test runs, independent hypotheses, and disjoint implementation
-slices. Prefer a flat team. Let a child create its own team only when its assignment
-contains genuinely independent subproblems and the global concurrency limit has room.
+slices. Children never create their own teams. Default to one active child; allow at
+most two read-only scouts when their questions are genuinely independent. There is
+only one writer globally.
 
 Do not spawn an agent merely to restate the task, create a plan Sol already needs to
 create, or wait while Sol has no useful parallel work.
@@ -77,6 +78,15 @@ manifest, and never claim a route or override that did not occur.
 
 ## Build the team
 
+Before the first delegation, after every child returns, and before every new phase,
+run `scripts/token_budget_guard.py --json` from this skill directory. Exit `10` is a
+soft checkpoint, not a script failure: report observed usage, remaining hard-limit
+budget, and the forecast before continuing. Exit `20` is a hard stop: start no new
+phase or agent without explicit user confirmation. Defaults are 100,000
+soft and 250,000 hard tokens. Exit `30` means usage is unavailable; conservatively
+checkpoint after three child tasks or two review/remediation cycles. These are
+behavioral gates; a skill cannot terminate an in-flight model call.
+
 Read [references/fanout-template.md](references/fanout-template.md) when delegating two
 or more slices. It contains the handoff contract, scratch layout, manifest, and retry
 procedure. For quick routing during an active task, read
@@ -90,10 +100,9 @@ Use the Codex collaboration tools directly:
 - `wait_agent` with a long timeout when Sol has no useful local work remaining.
 - `interrupt_agent` only when the assignment is obsolete, unsafe, or conflicting.
 
-Spawn independent agents without waiting between spawns. Stay within the runtime's
-available slots. If setting a child model or effort requires a context-limited fork,
-use a self-contained handoff rather than full chat history. Give full history only when
-the slice genuinely depends on it.
+Use `fork_turns="none"` with a self-contained handoff for every child. Do not pass the
+conversation history. Launch two read-only scouts together only when they satisfy the
+independence test above; otherwise use one child at a time.
 
 ## Protect the main context
 

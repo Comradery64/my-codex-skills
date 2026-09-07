@@ -41,6 +41,11 @@ the runtime actually supports them.
 Keep one agent when work is small, sequential, tightly coupled, write-contentious, or
 dominated by one slow external operation.
 
+Children never delegate. Use `fork_turns="none"`; default to one child and allow at
+most two concurrent read-only scouts. Run `scripts/token_budget_guard.py --json`
+before delegation, after each return, and before a new phase. Soft 100,000 requires a
+visible reforecast; hard 250,000 requires explicit user confirmation to continue.
+
 ## Context firewall
 
 When repository writes are permitted, write noisy output to

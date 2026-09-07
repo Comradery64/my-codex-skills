@@ -40,6 +40,7 @@ Budget preflight:
 - Hard ceiling: <none, or the user's exact limit>
 - Control or bound: <enforceable control, or usage and pricing evidence>
 - Stop condition: <observable threshold that stops work before the limit>
+- Ledger command/result: `scripts/token_budget_guard.py --json` / <status and totals>
 ```
 
 The manifest is an audit aid, not a reason to add process to a two-minute task.
@@ -85,22 +86,22 @@ Return only:
 - stopped_short: true|false — <reason if true>
 ```
 
-If the spawn call can override the model or reasoning effort, use a self-contained
-handoff and a context-limited fork supported by the current collaboration tool. Do not
-combine an explicit override with full-history inheritance when the runtime forbids it.
+Always use a self-contained handoff with `fork_turns="none"`. Never pass full
+conversation history to a child.
 If collaboration tools or either override are unavailable, use inherited or available
 behavior, record the deviation in the manifest or concise return, and never claim the
 requested route occurred.
 
 ## 4. Launch and coordinate
 
-1. Spawn independent slices back-to-back, up to the session's available slots.
+1. Default to one child. At most two independent read-only scouts may run together;
+   there is one writer globally. Children never delegate.
 2. While they run, root Sol handles shared-context analysis, integration preparation,
    or other work that cannot be delegated.
 3. Send additional information to a running agent only when it materially changes or
    unblocks that slice.
 4. Wait with a long timeout only after useful root work is exhausted.
-5. Update the manifest from the concise returns. Read full artifacts only where the
+5. Run the ledger guard after each return, then update the manifest. Read full artifacts only where the
    decision, risk, or integration requires them.
 
 Prefer a flat team. A child may spawn descendants only if its own scope contains

@@ -8,6 +8,7 @@ Use this reference when creating a multi-task plan or dispatching a worker.
 # <objective>
 
 Runtime: requested `gpt-6-astra` / `xhigh`; effective: <value|unknown>.
+Ledger: `scripts/token_budget_guard.py --json` -> <status and totals>.
 
 | ID | Phase | Outcome / gate | Depends on | Owner | Why this route | Paths | Contract | Acceptance | Band | Status | Accepted evidence |
 |---|---|---|---|---|---|---|---|---|---|---|---|
@@ -53,7 +54,7 @@ spawn_agent({
 })
 ```
 
-An all-history fork cannot be combined with overrides when the runtime forbids it.
+Always use `fork_turns: "none"`; never pass full conversation history to a child.
 Use `send_message` only to add material context to a running worker. Use
 `followup_task` for an idle worker's one targeted remediation; it retains its
 model/effort. To replace it, first `interrupt_agent`, wait until stopped, then spawn a

@@ -89,9 +89,20 @@ Astra has useful independent work. Respect the runtime slot limit; do not hard-c
 number. A scout must not mutate shared test state while a writer is active: freeze its
 inputs or defer it. Never spawn merely to delegate.
 
+## Absolute token gate
+
+Relative savings do not prevent an absolutely expensive run. Before the first
+delegation, after every child returns, and before each new phase, run
+`scripts/token_budget_guard.py --json` from this skill directory. Exit `10` is a soft
+checkpoint at 100,000 tokens: report observed usage, remaining hard-limit budget, and
+the forecast. Exit `20` is a hard stop at 250,000: start no new phase or agent without
+explicit user confirmation. Exit `30` means usage is unavailable; checkpoint after
+three child tasks or two review/remediation cycles. The guard cannot terminate an
+in-flight call and must not be described as a platform spending cap.
+
 ## Handoffs, context, and acceptance
 
-Use a compact, no-history handoff: objective and why; absolute repository path;
+Use `fork_turns="none"` and a compact, no-history handoff: objective and why; absolute repository path;
 in/out-of-scope paths; assigned model and effort; edit authority; intended behavior;
 scratch artifact; verification; stop conditions; and the return contract below.
 
