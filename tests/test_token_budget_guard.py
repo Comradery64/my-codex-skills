@@ -34,19 +34,50 @@ class GuardTests(unittest.TestCase):
     def test_skill_copies_are_identical(self):
         self.assertEqual(SCRIPTS[0].read_bytes(), SCRIPTS[1].read_bytes())
 
-    def test_cumulative_root_is_not_double_counted_with_child(self):
+    def test_tree_sums_each_thread_once(self):
         for script in SCRIPTS:
             with self.subTest(script=script), tempfile.TemporaryDirectory() as temp:
                 sessions = Path(temp) / "sessions"; sessions.mkdir()
                 write(sessions / "root.jsonl", "root", usage=(100, 200))
                 write(sessions / "child.jsonl", "child", "root", usage=(200,))
                 result = self.run_guard(script, temp, "--session", str(sessions / "root.jsonl"),
-                                        "--tree", "--soft-limit", "250", "--hard-limit", "250")
+                                        "--tree", "--soft-limit", "450", "--hard-limit", "450")
                 body = json.loads(result.stdout)
                 self.assertEqual(result.returncode, 20)
-                self.assertEqual(body["tokens"]["total_tokens"], 300)
+                self.assertEqual(body["tokens"]["total_tokens"], 500)
                 self.assertEqual(body["threads"], 2)
+                self.assertEqual(body["turns"], 2)
+                self.assertEqual(set(body["thread_sources"]), {"root", "child"})
                 self.assertNotIn("TOP_SECRET_SENTINEL", result.stdout)
+
+    def test_without_tree_uses_only_selected_thread(self):
+        for script in SCRIPTS:
+            with self.subTest(script=script), tempfile.TemporaryDirectory() as temp:
+                sessions = Path(temp) / "sessions"; sessions.mkdir()
+                write(sessions / "root.jsonl", "root", usage=(100, 200))
+                write(sessions / "child.jsonl", "child", "root", usage=(200,))
+                result = self.run_guard(script, temp, "--session", str(sessions / "root.jsonl"),
+                                        "--soft-limit", "400", "--hard-limit", "450")
+                body = json.loads(result.stdout)
+                self.assertEqual(result.returncode, 0)
+                self.assertEqual(body["tokens"]["total_tokens"], 300)
+                self.assertEqual(body["threads"], 1)
+
+    def test_tree_with_missing_child_usage_is_unknown(self):
+        for script in SCRIPTS:
+            with self.subTest(script=script), tempfile.TemporaryDirectory() as temp:
+                sessions = Path(temp) / "sessions"; sessions.mkdir()
+                write(sessions / "root.jsonl", "root", usage=(100,))
+                child = [{"type": "session_meta", "payload": {
+                    "id": "child", "parent_thread_id": "root",
+                    "timestamp": "2026-01-01T00:00:00Z"}}]
+                (sessions / "child.jsonl").write_text("\n".join(json.dumps(row) for row in child))
+                result = self.run_guard(script, temp, "--session", str(sessions / "root.jsonl"),
+                                        "--tree")
+                body = json.loads(result.stdout)
+                self.assertEqual(result.returncode, 30)
+                self.assertEqual(body["status"], "unknown")
+                self.assertEqual(body["missing_threads"], ["child"])
 
     def test_request_usage_fallback_and_thresholds(self):
         for script in SCRIPTS:

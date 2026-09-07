@@ -76,7 +76,8 @@ def emit(args, result, code):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--session", help="explicit JSONL session path")
-    parser.add_argument("--tree", action="store_true", help="include descendant session counts")
+    parser.add_argument("--tree", action="store_true",
+                        help="sum the selected session and every descendant thread")
     parser.add_argument("--cwd", default=os.path.expanduser("~/.codex"),
                         help="Codex directory or sessions root")
     parser.add_argument("--soft-limit", type=int, default=100000)
@@ -107,25 +108,38 @@ def main(argv=None):
         selected = max(roots, key=lambda sid: data[sid].get("timestamp") or "") if roots else None
     if not selected:
         return emit(args, {"status": "unknown", "error": "no root session found"}, 30)
-    by_parent = defaultdict(list)
-    for sid, row in data.items():
-        by_parent[row["parent"]].append(sid)
-    tree, pending = {selected}, [selected]
-    while pending:
-        for child in by_parent[pending.pop()]:
-            if child not in tree:
-                tree.add(child)
-                pending.append(child)
-    usage = data[selected]["usage"]
-    if not usage:
+    selected_ids = {selected}
+    if args.tree:
+        by_parent = defaultdict(list)
+        for sid, row in data.items():
+            by_parent[row["parent"]].append(sid)
+        pending = [selected]
+        while pending:
+            for child in by_parent[pending.pop()]:
+                if child not in selected_ids:
+                    selected_ids.add(child)
+                    pending.append(child)
+
+    missing = sorted(sid for sid in selected_ids if not data[sid]["usage"])
+    if missing:
         return emit(args, {"status": "unknown", "session": selected,
-                           "error": "no token usage records found"}, 30)
+                           "threads": len(selected_ids), "missing_threads": missing,
+                           "error": "one or more threads have no token usage records"}, 30)
+
+    # Each session file reports cumulative usage for that thread. Sum one latest
+    # snapshot per selected thread; never sum multiple cumulative records from a file.
+    usage = {key: sum(data[sid]["usage"].get(key, 0) for sid in selected_ids)
+             for key in CLASSES}
     total = usage["total_tokens"]
     status = "hard" if total >= args.hard_limit else "soft" if total >= args.soft_limit else "ok"
     result = {"status": status, "session": selected, "session_path": data[selected]["path"],
-              "threads": len(tree), "turns": data[selected]["turns"],
-              "token_records": data[selected]["token_records"],
-              "aggregate_source": data[selected]["source"], "tokens": usage,
+              "threads": len(selected_ids),
+              "turns": sum(data[sid]["turns"] for sid in selected_ids),
+              "token_records": sum(data[sid]["token_records"] for sid in selected_ids),
+              "aggregate_source": (data[selected]["source"] if len(selected_ids) == 1
+                                   else "sum(latest thread-local usage)"),
+              "thread_sources": {sid: data[sid]["source"] for sid in sorted(selected_ids)},
+              "tokens": usage,
               "soft_limit": args.soft_limit, "hard_limit": args.hard_limit}
     return emit(args, result, 20 if status == "hard" else 10 if status == "soft" else 0)
 

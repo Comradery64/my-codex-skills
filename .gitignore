@@ -1,6 +1,5 @@
 .DS_Store
-.frugal-sol/
+.stingy-sol/
 *.log
 .env
 .env.local
-

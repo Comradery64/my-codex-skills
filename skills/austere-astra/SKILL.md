@@ -1,150 +1,93 @@
 ---
 name: austere-astra
-description: Use GPT-6 Astra at xhigh for framing, architecture, acceptance, and final review while routing bounded evidence and execution tasks to the least expensive capable Codex model. Use for substantial implementation, debugging, research, migration, or multi-phase work; skip small single-chain tasks.
+description: Use GPT-6 Astra at xhigh as the root planner, architect, integrator, and reviewer while dynamically routing bounded work to capable lower-cost Codex models. Use for substantial implementation, debugging, research, migrations, and multi-phase work; skip small single-chain tasks.
 ---
 
 # Austere Astra
 
-Adapted from `stingy-sol`, originating in the user's frugal-fable project (archived).
-Use it to preserve Astra-led quality while reducing avoidable worker cost. It is a
-cost target, never permission to reduce the required outcome or Astra's xhigh effort.
+Keep GPT-6 Astra at `xhigh` responsible for the decisions where intelligence compounds,
+then delegate bounded work at the lowest model and effort that can meet an explicit
+acceptance gate. The 10–30% comparative cost goal is aspirational; it never justifies
+lowering Astra's root effort, weakening the requested result, or accepting bad work.
 
-## Authority and runtime truth
+## Root authority and runtime truth
 
-Astra at `xhigh` owns initial framing, scout questions, evidence synthesis,
-architecture, alternatives and tradeoffs, success criteria, phase boundaries, task
-routing, acceptance, replanning, and final review. It does not delegate those
-judgments to a planner proxy.
+Astra owns framing, scout questions, evidence synthesis, architecture, tradeoffs,
+phase boundaries, the evolving task graph, model and effort selection, integration,
+acceptance, replanning, final review, and the user-facing answer. Workers never make
+those project-level decisions and never delegate to other workers.
 
-A skill cannot change the running root model or effort. When runtime metadata is
-available, record the requested and effective model/effort; otherwise record
-`unknown`. Do not claim an Astra-xhigh run if it is not one. When identity is needed
-to meet the user's explicit request, prepare a concrete plan, handoff, and evidence
-with current capabilities and ask the user to select Astra xhigh. Do not silently
-substitute Sol or edit global configuration. `xhigh` is exact: do not upgrade it to
-`max` or `ultra` merely for intelligence.
+A skill cannot change the live root model or effort. Record requested and effective
+values when the runtime exposes them, otherwise record `unknown`. Do not claim an
+Astra-xhigh run when either value differs. Do not edit global configuration or silently
+substitute Sol. `xhigh` is the requested root setting; do not raise it to `max` or
+`ultra` merely because a higher setting exists.
 
-Use only tools and overrides actually exposed by the runtime. A hard cost cap needs
-an enforceable controller or conservative preflight bound; a skill alone cannot
-enforce one. Do useful authorized work first, then request only the clarification
-needed before crossing an unbounded cap.
+## Shared operating references
 
-## Astra-led phases
+Read [references/model-catalog.md](references/model-catalog.md) before routing workers.
+It defines the shared model categories, capability boundaries, effort labels, and
+selection criteria used by both orchestration skills.
 
-1. **Frame.** Astra defines outcome, constraints, unknowns, risks, and targeted scout
-   questions before reconnaissance.
-2. **Investigate and plan.** Luna `low` gathers read-only evidence; use Terra `low` or
-   `medium` for complex tracing. Astra resolves contradictions, checks important
-   primary sources, and writes the phase/task plan.
-3. **Execute one accepted task at a time.** Before starting, Astra confirms accepted
-   dependencies, selects the exact worker model and effort with a reason, and supplies
-   a self-contained handoff. One worker patches, verifies, or integrates; it returns
-   artifacts. Astra inspects the relevant diff, contracts, and evidence, then accepts,
-   requests a correction, or replans. Do not start the next execution task before
-   acceptance, unless an explicit Astra replan removes that dependency.
-4. **Gate each phase and finish.** Astra verifies integrated behavior, refines the next
-   phase plan, and finally accepts the original requirements rather than a collection
-   of passing subtasks.
+Read [references/orchestration.md](references/orchestration.md) before a multi-task
+delegation. It defines the adaptive dependency graph, parallel and waterfall criteria,
+task board, handoff contract, acceptance loop, and collaboration-tool adapter.
 
-For a plan-only request, stop after the plan. Once the user authorizes a build,
-internal acceptance gates do not require asking the user after every task.
+Read [references/cost-model.md](references/cost-model.md) before estimating or reporting
+cost. It defines the shared pricing snapshot, ledger, comparison rules, and limits of
+the token guard.
 
-## Plan and task board
+## Adaptive execution
 
-Maintain a compact board in the task artifact or existing project convention. Include
-phase outcome plus entry/exit gates; ordered IDs and dependencies; exact owner
-model/effort; one-line selection reason; allowed paths; intended contracts; acceptance
-checks; estimate or budget band; status; and accepted evidence. Fully specify near-term
-tasks; later tasks may be provisional but must name proposed routing and gates.
+1. Astra frames the outcome, constraints, unknowns, risks, and first evidence needs.
+2. Astra creates a provisional dependency graph and selects a model and effort for
+   every ready task with a one-line reason.
+3. Astra runs independent, safe tasks concurrently when the expected time or context
+   benefit exceeds coordination cost. It sequences dependent, overlapping, or
+   shared-state work as a waterfall.
+4. After every return, Astra inspects the relevant evidence or diff, accepts or rejects
+   the task, updates dependencies and assumptions, and decides the next wave. The
+   initial plan is not a fixed execution schedule.
+5. At each phase gate, Astra verifies integrated behavior and revises the remaining
+   graph. Final acceptance covers the original outcome, not merely completed subtasks.
 
-Tiny direct Astra work is permitted where delegation overhead dominates; record why.
-Root Astra owns coordination and integration decisions, although it may assign a
-mechanical integration step to the sole execution worker.
+Each worker owns one bounded task. Parallel writers require disjoint file ownership,
+stable contracts, isolated validation state, and independent acceptance. If any of
+those conditions stop being true, Astra serializes the work. For a plan-only request,
+stop after delivering the plan. Once implementation is authorized, internal task gates
+do not require repeated user permission.
 
-## Route by task evidence
+## Context and verification
 
-Choose model and effort from ambiguity, stakes, reversibility, coupling, verifiability,
-and local evidence; the table is guidance, not an immutable floor.
+Use `fork_turns="none"` and a self-contained handoff. Keep raw exploration and logs in
+task-scoped scratch artifacts when allowed. Workers return concise paths, findings,
+confidence, verification results, and stopped-short status. Treat summaries as leads:
+Astra reopens critical evidence, inspects final diffs, reconciles conflicts, and runs
+the acceptance checks proportional to risk.
 
-| Work | Typical route | Gate |
-|---|---|---|
-| Inventory, log reduction, mechanical docs, read-only source gathering | Luna `low` | Cited paths, commands, or sources |
-| Bounded code/test implementation | Terra `medium`; `low` if deterministic | Relevant checks or explicit evidence |
-| Difficult refactor, security concern, cross-system diagnosis | Sol `high`; `medium` if clearly bounded | Astra review of diff and evidence |
-| Novel or ambiguous high-stakes design; planning and acceptance | Astra `xhigh` | Astra decision record |
+Allow one targeted remediation after a failed gate, missing evidence, or capability
+failure. Astra diagnoses whether the problem is specification, environment, effort, or
+model capability before changing the route. After another failure, Astra replans,
+takes ownership, or reports the blocker. Never create an automatic retry swarm.
 
-Luna is not a default code architect or semantic/security implementer: improve the
-specification before gambling on a cheap route. Sol is not the default worker. Astra
-may select another supported effort when evidence justifies it, but never automatically
-downshift orchestration to meet a cost target. Record every exact selection.
+## Cost checkpoints
 
-## Global execution lane
+Before the first delegation, after each completed wave, and before a new phase, run
+`scripts/token_budget_guard.py --tree --json` from this skill directory when Codex
+session logs are available. Exit `10` is a soft checkpoint at 100,000 tokens: report
+observed usage, remaining hard-limit budget, and forecast. Exit `20` is a hard workflow
+checkpoint at 250,000 tokens: start no new phase or worker without explicit user
+confirmation. Exit `30` means aggregate usage is unavailable. The guard cannot stop an
+in-flight call and is not a platform spending cap.
 
-There is one execution task globally: patching, verification work, and integration all
-occupy that lane. Do not allow parallel coding, even on disjoint files, in the default
-mode. Do not let workers autonomously delegate.
-
-Independent, read-only scouts may run in parallel only during reconnaissance or while
-Astra has useful independent work. Respect the runtime slot limit; do not hard-code a
-number. A scout must not mutate shared test state while a writer is active: freeze its
-inputs or defer it. Never spawn merely to delegate.
-
-## Absolute token gate
-
-Relative savings do not prevent an absolutely expensive run. Before the first
-delegation, after every child returns, and before each new phase, run
-`scripts/token_budget_guard.py --json` from this skill directory. Exit `10` is a soft
-checkpoint at 100,000 tokens: report observed usage, remaining hard-limit budget, and
-the forecast. Exit `20` is a hard stop at 250,000: start no new phase or agent without
-explicit user confirmation. Exit `30` means usage is unavailable; checkpoint after
-three child tasks or two review/remediation cycles. The guard cannot terminate an
-in-flight call and must not be described as a platform spending cap.
-
-## Handoffs, context, and acceptance
-
-Use `fork_turns="none"` and a compact, no-history handoff: objective and why; absolute repository path;
-in/out-of-scope paths; assigned model and effort; edit authority; intended behavior;
-scratch artifact; verification; stop conditions; and the return contract below.
-
-Prefer a task-specific OS-temporary scratch directory outside the repository, unless
-an allowed project convention already exists. Do not add `.gitignore` entries merely
-for scratch. Preserve accepted contracts, decisions, gates, routing, and actual cost
-data across compaction; revalidate state after resuming.
-
-Workers return at most about 200 words: artifact path(s), a three-line summary,
-confidence, verification result, and `stopped_short` with reason. Astra opens only
-relevant diffs, contracts, and critical evidence rather than every raw log.
-
-## Retry and coordination tools
-
-After a failed gate, missing evidence, mismatch, or stopped-short result, Astra first
-diagnoses specification, environment, or capability. Permit one bounded remediation
-per task. A follow-up retains its model/effort; stop an obsolete worker before a
-replacement, and specify overrides when changing either. After the retry fails, Astra
-replans or takes ownership. Do not create cheap retry loops or bypass a refusal by
-model swapping.
-
-For exact collaboration calls, handoff and retry mechanics, read
-[references/run-template.md](references/run-template.md). It distinguishes API
-`reasoning.effort`, collaboration `reasoning_effort`, and CLI
-`model_reasoning_effort`. Do not invent Workflow/TaskCreate, budget controls, or a
-persistent goal; create a goal only on the user's explicit request.
-
-## Cost control and truthful reporting
-
-The aspirational target is **10–30%** of a comparable all-Astra-xhigh cost (70–90%
-savings), while retaining quality. It is not a guarantee or quota. Read
-[references/cost-model.md](references/cost-model.md) before estimates or final cost
-claims. It contains the pricing snapshot, ledger, baseline rules, and worked algebra.
-
-Reserve review and one correction. Reforecast after each phase before an expensive
-escalation. If forecast cost exceeds 30%, reduce duplicated context and task size or
-route only work a cheaper capable model can do; disclose the miss and finish authorized
-scope. If it is under 10%, do not spend merely to reach the target.
+The target is 10–30% of a comparable all-Astra-xhigh run. Reforecast after every phase
+and before an expensive escalation. Reduce duplicate context, unnecessary fan-out, and
+oversized tasks when the forecast misses. Do not reduce authorized scope or spend more
+merely to reach the lower bound. Report observed, estimated, and unknown values
+separately.
 
 ## Final acceptance
 
-Astra checks the original outcome, relevant integrated behavior, accepted evidence,
-remaining risks, and deviations from requested/effective routing. Report cost as
-observed, estimated, or unknown—never zero by omission—and distinguish API estimates
-from a ChatGPT subscription or credit bill.
+Astra checks the original requirements, integrated behavior, accepted evidence,
+remaining risks, routing deviations, and cost status. Preserve these decisions across
+compaction and revalidate repository and task state when resuming.

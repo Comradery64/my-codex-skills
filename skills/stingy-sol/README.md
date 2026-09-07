@@ -9,8 +9,9 @@ and explicit subagent or agent-team orchestration. Small or tightly coupled task
 with one agent.
 
 - [Full skill](./SKILL.md)
-- [Routing cheatsheet](./references/routing-cheatsheet.md)
-- [Fan-out template](./references/fanout-template.md)
+- [Model catalog](./references/model-catalog.md)
+- [Adaptive orchestration](./references/orchestration.md)
+- [Cost model](./references/cost-model.md)
 
 Do not combine it with Ultra or another proactive exhaustive-delegation policy; this
 skill supplies a bounded delegation policy of its own.
