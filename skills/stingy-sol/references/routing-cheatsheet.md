@@ -1,4 +1,4 @@
-# Frugal Sol routing cheatsheet
+# Stingy Sol routing cheatsheet
 
 ## Two controls
 
@@ -43,9 +43,12 @@ dominated by one slow external operation.
 
 ## Context firewall
 
-Write noisy output to `.frugal-sol/<task>/<slice>/`. Return only path, a three-line
-summary, confidence, verification result, and stopped-short status. Root Sol reads full
-artifacts only on demand.
+When repository writes are permitted, write noisy output to
+`.stingy-sol/<task>/<slice>/`. Otherwise use a task-specific OS temporary directory
+outside the repository; if neither is safe, return concise inline evidence. Return only
+path, a three-line summary, confidence, verification result, and stopped-short status.
+Record unavailable collaboration, model, or effort overrides as deviations; never claim
+that an unavailable route occurred. Root Sol reads full artifacts only on demand.
 
 ## Handoff
 
@@ -64,4 +67,3 @@ root Sol owns it or reports the blocker.
 
 Reports are leads. Reopen high-impact evidence, inspect final diffs, run relevant
 checks, reconcile conflicts, and account for every slice before declaring completion.
-

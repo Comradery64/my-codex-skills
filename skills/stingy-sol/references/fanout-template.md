@@ -1,4 +1,4 @@
-# Frugal Sol fan-out template
+# Stingy Sol fan-out template
 
 Read this reference when two or more independent slices justify a subagent team.
 
@@ -7,15 +7,18 @@ Read this reference when two or more independent slices justify a subagent team.
 Use a task-specific location:
 
 ```text
-.frugal-sol/<task>/
+.stingy-sol/<task>/
 ├── manifest.md
 ├── <slice-a>/report.md
 ├── <slice-b>/report.md
 └── <slice-c>/report.md
 ```
 
-Keep `.frugal-sol/` out of version control. Use a repository's existing scratch
-convention instead when it has one.
+Use `.stingy-sol/` only when task permissions allow repository writes; keep it out of
+version control. Otherwise use a task-specific OS temporary directory outside the
+repository. If neither is safe, return concise inline evidence rather than writing an
+artifact. Use a repository's existing scratch convention instead when it has one and
+the task permits it. Coordination artifacts never override user write constraints.
 
 ## 2. Write the manifest
 
@@ -32,9 +35,17 @@ Before spawning, record the intended team in `manifest.md`:
 
 Overrides:
 - threat-review: Terra -> Sol because authentication semantics are security-critical.
+
+Budget preflight:
+- Hard ceiling: <none, or the user's exact limit>
+- Control or bound: <enforceable control, or usage and pricing evidence>
+- Stop condition: <observable threshold that stops work before the limit>
 ```
 
 The manifest is an audit aid, not a reason to add process to a two-minute task.
+If a hard ceiling cannot be enforced or safely bounded, stop before spawning. Ask the
+user to relax it, authorize a specific reduced scope, or provide an enforceable budget
+control; do not record a guessed bound or silently change the requested outcome.
 
 ## 3. Build each handoff
 
@@ -55,7 +66,8 @@ Assignment:
 - Model: <gpt-5.6-luna|gpt-5.6-terra|gpt-5.6-sol>
 - Reasoning floor: <low|medium|high|xhigh|max>
 - Source edits: <none|only these disjoint files>
-- Scratch artifact: .frugal-sol/<task>/<slice>/report.md
+- Scratch artifact: .stingy-sol/<task>/<slice>/report.md, or an OS-temp path when the
+  task is read-only
 
 Verification:
 - Run: <exact command>, or collect: <exact evidence>
@@ -73,9 +85,12 @@ Return only:
 - stopped_short: true|false — <reason if true>
 ```
 
-If the spawn call overrides the model or reasoning effort, use a self-contained handoff
-and a context-limited fork supported by the current collaboration tool. Do not combine
-an explicit override with full-history inheritance when the runtime forbids it.
+If the spawn call can override the model or reasoning effort, use a self-contained
+handoff and a context-limited fork supported by the current collaboration tool. Do not
+combine an explicit override with full-history inheritance when the runtime forbids it.
+If collaboration tools or either override are unavailable, use inherited or available
+behavior, record the deviation in the manifest or concise return, and never claim the
+requested route occurred.
 
 ## 4. Launch and coordinate
 
@@ -121,4 +136,3 @@ retry for that slice. If the retry fails, stop the loop and surface it to root S
 Synthesize only after all requested results are available or explicitly accounted for.
 Report unresolved slices honestly. Do not launch a new broad gap-filling team unless the
 user expands the scope or the original acceptance criteria cannot otherwise be met.
-

@@ -1,9 +1,9 @@
 ---
-name: frugal-sol
+name: stingy-sol
 description: Use GPT-5.6 Sol as the planning, coordination, integration, and final-review agent for substantial Codex work while routing independent, bounded work to GPT-5.6 Terra or Luna at the lowest sufficient reasoning effort. Use for multi-file implementation, broad repository exploration, research, testing, debugging, migrations, or explicit requests to orchestrate subagents efficiently. Do not use for a small task that one agent can finish directly.
 ---
 
-# Frugal Sol
+# Stingy Sol
 
 Use two cost controls in order:
 
@@ -22,8 +22,13 @@ findings, integration, final verification strategy, and the user-facing answer.
 - Do not combine this skill with Ultra or another proactive, exhaustive delegation
   policy. If one is clearly active, explain the conflict and ask the user to disable it
   before continuing. This skill provides its own bounded delegation policy.
-- A skill cannot enforce an account-spend ceiling. If the user gives a hard budget,
-  treat it as a limit: reduce scope or agent count before risking an overrun.
+- A skill cannot itself enforce an account-spend ceiling. Before starting work under a
+  hard ceiling, confirm that an available budget control can enforce it or that current
+  usage and pricing data can bound the run safely. If neither is available, do not
+  promise completion or silently reduce the requested scope. State the cost uncertainty
+  and ask the user to relax the ceiling, authorize a specific reduced scope, or provide
+  an enforceable control. Record the control and stop condition in the run manifest
+  when one is used, and stop before crossing the bound.
 
 ## Decide whether to delegate
 
@@ -66,6 +71,9 @@ it between phases. When it can be selected before the run, choose it for the har
 root-only phase: typically `high` for fuzzy decomposition, `low` or `medium` for clean
 integration, and `medium` or `high` for consequential final review. Set each spawned
 agent's model and reasoning effort explicitly whenever the collaboration tool permits.
+If collaboration tools, a requested model, or an effort override are unavailable, use
+the inherited or available behavior instead, record the deviation in the handoff or
+manifest, and never claim a route or override that did not occur.
 
 ## Build the team
 
@@ -89,8 +97,12 @@ the slice genuinely depends on it.
 
 ## Protect the main context
 
-Put noisy output in `.frugal-sol/<task>/<slice>/` inside the working repository. Ask
-each subagent to return only:
+Use repository-local `.stingy-sol/<task>/<slice>/` scratch only when the task's
+permissions allow writes to the repository. When repository writes are not allowed,
+use a task-specific directory in the operating system's temporary area outside the
+repository. If neither location is safely available, return concise inline evidence
+instead of creating coordination artifacts. Coordination artifacts never override user
+write constraints. Ask each subagent to return only:
 
 - the artifact path;
 - a summary of no more than three lines;

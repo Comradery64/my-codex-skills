@@ -14,15 +14,15 @@ model and effort, then reviews its result before the next task starts.
 - [Run template](./skills/austere-astra/references/run-template.md)
 - [Cost model](./skills/austere-astra/references/cost-model.md)
 
-### [Frugal Sol](./skills/frugal-sol)
+### [Stingy Sol](./skills/stingy-sol)
 
 Use GPT-5.6 Sol for planning, coordination, integration, and final review while routing
 independent, verifiable work to GPT-5.6 Terra or Luna with explicit reasoning floors,
 file ownership, verification gates, and bounded escalation.
 
-- [Full skill](./skills/frugal-sol/SKILL.md)
-- [Routing cheatsheet](./skills/frugal-sol/references/routing-cheatsheet.md)
-- [Fan-out template](./skills/frugal-sol/references/fanout-template.md)
+- [Full skill](./skills/stingy-sol/SKILL.md)
+- [Routing cheatsheet](./skills/stingy-sol/references/routing-cheatsheet.md)
+- [Fan-out template](./skills/stingy-sol/references/fanout-template.md)
 
 ## Install
 
