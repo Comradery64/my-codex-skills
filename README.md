@@ -4,6 +4,16 @@ A collection of reusable skills for Codex.
 
 ## Skills
 
+### [Austere Astra](./skills/austere-astra)
+
+Use GPT-6 Astra at xhigh for planning, architecture, and review, with cheaper models
+for evidence gathering and one execution worker at a time. Astra selects each task's
+model and effort, then reviews its result before the next task starts.
+
+- [Full skill](./skills/austere-astra/SKILL.md)
+- [Run template](./skills/austere-astra/references/run-template.md)
+- [Cost model](./skills/austere-astra/references/cost-model.md)
+
 ### [Frugal Sol](./skills/frugal-sol)
 
 Use GPT-5.6 Sol for planning, coordination, integration, and final review while routing

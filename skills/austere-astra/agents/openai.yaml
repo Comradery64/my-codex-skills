@@ -1,0 +1,6 @@
+interface:
+  display_name: "Austere Astra"
+  short_description: "Astra-led, cost-aware Codex orchestration"
+  default_prompt: "Use $austere-astra to plan and execute this substantial task with Astra-led review and cost-aware workers."
+policy:
+  allow_implicit_invocation: true
