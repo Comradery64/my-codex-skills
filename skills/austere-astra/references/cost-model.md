@@ -24,7 +24,8 @@ API estimates are not a ChatGPT subscription or credit-balance statement.
 
 ## Ledger
 
-For the root and every worker, record:
+For the root and every worker, record when the measurement source exposes the needed
+breakdown:
 
 - task ID plus requested and effective model and effort;
 - observed or estimated input, cached input, cache-write, and output tokens;
@@ -33,30 +34,48 @@ For the root and every worker, record:
 - the measurement source and any unavailable fields;
 - retries and repeated context.
 
+For the run, also record cost per accepted milestone, root versus worker usage where
+observable, accepted tasks and revisions, and coordination overhead when it is
+observable. Do not manufacture per-thread figures or overhead precision from an
+aggregate. Treat coordination overhead as a subset of recorded cost, not an additional
+charge. Include failed attempts in their milestone's cost and report unfinished work
+separately; do not hide its cost by counting only successes. Never convert an aggregate
+token total directly into a dollar total without the applicable model, billing class,
+and measurement assumptions.
+
 Compute model cost from non-overlapping billing classes:
 
 `cost = Σ(tokens in class × matched class rate) / 1,000,000 + other metered costs`
 
 Do not add reasoning tokens again when the provider includes them in output. Do not
 record missing usage as zero. Distinguish observed, estimated, and unknown amounts.
+Usage telemetry that zero-fills omitted token classes is not proof that those billing
+classes were measured as zero; cost estimates require source coverage for the billing
+classes they use.
 
 ## Token guard
 
-Run `scripts/token_budget_guard.py --tree --json` with the root session when session
-logs are available. In tree mode the script finds descendants and sums each thread's
-latest thread-local cumulative usage exactly once. If any selected thread lacks usage,
-the aggregate is `unknown` rather than a misleading partial total.
+Run `scripts/token_budget_guard.py --tree --json --session <active-root-session>` when
+session logs are available. Supplying the active root session is required for correct
+attribution: the default newest root can select an unrelated concurrent run. The guard
+sums each selected thread's latest cumulative usage once. The JSON includes
+`root_tokens`, `worker_tokens`, and `thread_tokens` when available; it does not infer models, prices, or billing classes. If a selected
+thread lacks usage, treat the aggregate as `unknown` rather than a misleading partial
+total. The breakdown remains telemetry, not proof that omitted billing fields cost zero.
+Take snapshots or deltas at milestone boundaries, especially for reused workers, to
+attribute incremental usage; do not assign their cumulative history to a later task.
 
 Default workflow checkpoints are:
 
-- exit `0`: below 100,000 aggregate tokens;
-- exit `10`: soft checkpoint at 100,000;
-- exit `20`: hard workflow checkpoint at 250,000;
+- exit `0`: below the 100,000-token advisory checkpoint;
+- exit `10`: advisory review at 100,000 tokens;
+- exit `20`: advisory review at 250,000 tokens (legacy telemetry label: `hard`);
 - exit `30`: aggregate unavailable.
 
-The root policy defines what to do at each checkpoint. The script reads completed log
-records; it cannot stop an in-flight call, enforce an account cap, or predict the size
-of the next worker. Leave enough headroom for root integration and a bounded revision.
+The root policy defines what to do at each checkpoint. These defaults are advisory;
+an explicit user hard budget is binding and must be honored without reinterpretation.
+The script reads completed log records and cannot predict the size of the next worker.
+Leave enough headroom for root integration and a bounded revision.
 
 ## Comparisons and targets
 

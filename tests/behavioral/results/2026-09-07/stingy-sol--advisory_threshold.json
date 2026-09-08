@@ -1,0 +1,63 @@
+{
+  "actions": [
+    {
+      "action": "record_advisory_review",
+      "arguments": {
+        "guard_exit_code": 20,
+        "legacy_status": "hard",
+        "observed_total_tokens": 260000,
+        "checkpoint_tokens": 250000,
+        "classification": "advisory",
+        "reason": "No user-specified hard budget or separate spending limit exists; the authorized goal remains active."
+      }
+    },
+    {
+      "action": "update_task_board",
+      "arguments": {
+        "task": "classifier contract",
+        "status": "in_progress",
+        "dependencies": [
+          "schema normalization receipt accepted",
+          "routing integration test receipt accepted"
+        ],
+        "ownership": [
+          "src/classifier/contract.py",
+          "tests/classifier/test_contract.py"
+        ],
+        "estimate_tokens": 6800,
+        "requested_model": "gpt-5.6-terra",
+        "requested_effort": "medium",
+        "effective_model": "unknown",
+        "effective_effort": "unknown",
+        "routing_reason": "Bounded production implementation with an approved mapping and a focused verification command; Terra medium is the lowest suitable tier for reliable code changes."
+      }
+    },
+    {
+      "action": "dispatch_worker",
+      "arguments": {
+        "task": "Implement the already-approved classifier field mapping.",
+        "model": "gpt-5.6-terra",
+        "effort": "medium",
+        "ownership": [
+          "src/classifier/contract.py",
+          "tests/classifier/test_contract.py"
+        ],
+        "instructions": [
+          "Work only in the owned files.",
+          "Other work may exist in the shared codebase; preserve it and do not revert unrelated edits.",
+          "Implement the approved field mapping without changing project-level scope or architecture.",
+          "Run python3 -m unittest tests.classifier.test_contract.",
+          "Return a receipt containing changed files, a concise diff summary, the exact verification command and result, and any remaining risks or blockers.",
+          "Do not delegate."
+        ],
+        "acceptance": [
+          "Approved field mapping is implemented.",
+          "Targeted unittest passes.",
+          "Receipt provides inspectable evidence for root review."
+        ]
+      }
+    }
+  ],
+  "rationale": "The guard's 250,000-token checkpoint is advisory because the user set no hard budget. The ledger confirms 260,000 observed tokens, so the checkpoint should be recorded and reviewed, but it does not require pausing an authorized active goal. The sole ready package is bounded, conflict-free, estimated at 6,800 tokens, and has a concrete test. Dispatching it preserves progress while stopping before acceptance until its receipt returns; the dependent documentation task remains unready.",
+  "user_message": "The project crossed the 250,000-token advisory checkpoint at 260,000 tokens. Because no hard budget was set, I recorded the review and dispatched the sole ready classifier-contract package with exclusive file ownership and its targeted unit test. I’ll assess the receipt before accepting the work or releasing the dependent handoff-note task."
+}

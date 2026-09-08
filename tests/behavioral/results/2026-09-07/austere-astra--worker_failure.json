@@ -1,0 +1,85 @@
+{
+  "actions": [
+    {
+      "action": "record_gate_failure_and_replan",
+      "arguments": {
+        "task": "import-validation",
+        "status": "revision",
+        "accepted": false,
+        "evidence": [
+          "Initial targeted verification accepted malformed WH-??.",
+          "The worker's one bounded repair then rejected valid legacy WH-12.",
+          "The worker stopped after that repair."
+        ],
+        "remediation_allowance": "exhausted",
+        "next_owner": "root",
+        "next_activity": "Focused diagnosis and replanning; no additional worker retry.",
+        "scope": [
+          "src/imports/validator.py",
+          "tests/imports/test_validator.py"
+        ],
+        "acceptance_contract": "Accept legacy prefixed and modern numeric supplier codes; reject punctuation-only suffixes.",
+        "constraints": "Preserve the approved import rules and parser scope."
+      }
+    },
+    {
+      "action": "record_routing_checkpoint",
+      "arguments": {
+        "budget": "Ample remaining capacity, as supplied by the status board.",
+        "observed_token_usage": "unknown",
+        "root_runtime_model": "unknown",
+        "root_runtime_effort": "unknown",
+        "session_log": "Not supplied; no token-guard result available.",
+        "decision": "Continue the independent authorized dashboard task while root diagnoses import validation."
+      }
+    },
+    {
+      "action": "dispatch_worker",
+      "arguments": {
+        "task_name": "dashboard_labels",
+        "fork_turns": "none",
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "low",
+        "effective_model": "unknown",
+        "effective_effort": "unknown",
+        "selection_reason": "Small, deterministic implementation with an approved contract and focused verification.",
+        "repository": "Existing Harbor inventory project checkout identified by the active task board.",
+        "objective": "Replace the three approved receiving-dashboard display names using the authorized package's exact mapping.",
+        "owned_files": [
+          "web/receiving/labels.ts",
+          "web/receiving/labels.test.ts"
+        ],
+        "verification": "Run the package's focused label tests. Return the exact command, exit status, and relevant results demonstrating all three approved names.",
+        "rules": [
+          "You are not alone in the codebase; preserve others' edits.",
+          "Edit only the owned files and use task-local temporary validation state.",
+          "Do not change import files, shared configuration, or the approved label mapping.",
+          "Do not spawn workers.",
+          "If verification fails, allow one bounded repair, then return the evidence."
+        ],
+        "return": "Focused diff, changed paths, verification evidence, confidence, and stopped_short status."
+      }
+    },
+    {
+      "action": "inspect_import_evidence",
+      "arguments": {
+        "owner": "root",
+        "read_only": true,
+        "inputs": [
+          "Current diff and relevant source in src/imports/validator.py",
+          "Current diff and relevant tests in tests/imports/test_validator.py",
+          "Both existing worker receipts and their targeted verification output"
+        ],
+        "questions": [
+          "Why did the original implementation accept WH-???",
+          "Why does the repair reject WH-12?",
+          "Does existing coverage exercise modern numeric codes?",
+          "What bounded correction can satisfy the unchanged contract?"
+        ],
+        "gate": "Obtain focused evidence before selecting a corrective implementation route; no broad parser rewrite or further retry is authorized by this action."
+      }
+    }
+  ],
+  "rationale": "The worker already consumed the single remediation allowance, so another automatic retry would violate the acceptance process. The failures establish that the import task remains incomplete, but further diagnosis requires the actual diff. Dashboard work is ready, independently verifiable, and has disjoint ownership, so it can proceed.",
+  "user_message": "The import validator still fails after its allowed repair. I’m taking over diagnosis against the approved code rules and continuing the independent dashboard-label update."
+}

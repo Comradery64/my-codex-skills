@@ -1,0 +1,56 @@
+{
+  "actions": [
+    {
+      "action": "record_milestone_state",
+      "arguments": {
+        "milestone": "service launch and port isolation",
+        "state": "in_progress",
+        "accepted_evidence": {
+          "structural_tests": "9 passing",
+          "scope": "configuration parsing, command construction, and service wiring"
+        },
+        "pending_criteria": [
+          "Launch the service with the real local runtime configuration",
+          "Verify the selected network port does not collide with the companion relay"
+        ],
+        "decision": "Do not accept the milestone from structural tests alone"
+      }
+    },
+    {
+      "action": "dispatch_worker",
+      "arguments": {
+        "task_id": "verify_real_runtime_launch",
+        "fork_turns": "none",
+        "requested_model": "gpt-5.6-terra",
+        "requested_effort": "medium",
+        "effective_model": "unknown",
+        "effective_effort": "unknown",
+        "selection_reason": "The package is bounded and reversible, but editing and validating launch behavior requires ordinary implementation judgment.",
+        "ownership": "Exclusive ownership of the board-recorded launch verification script and its focused test; no edits to port-selection configuration or collision-test files.",
+        "objective": "Complete the approved launch-verification package and prove that the service starts with the real local runtime configuration.",
+        "dependencies": "Approved launch contract, existing implementation, and nine passing structural tests.",
+        "verification": "Run the focused test and the approved real-runtime launch command from the current workspace; success requires observable service startup using the local runtime configuration. Return exact commands, exit status, relevant output, changed paths, diff summary, confidence, and stopped_short status.",
+        "constraints": "Preserve unrelated changes, do not spawn workers, and stop if work crosses assigned paths or requires a product decision."
+      }
+    },
+    {
+      "action": "dispatch_worker",
+      "arguments": {
+        "task_id": "verify_port_collision_avoidance",
+        "fork_turns": "none",
+        "requested_model": "gpt-5.6-terra",
+        "requested_effort": "medium",
+        "effective_model": "unknown",
+        "effective_effort": "unknown",
+        "selection_reason": "The package is bounded and independently testable, while configuration correctness and live relay interaction require semantic judgment.",
+        "ownership": "Exclusive ownership of the board-recorded port-selection configuration and collision-check test; no edits to launch-verification files.",
+        "objective": "Complete the approved port-selection package and prove that the service port does not collide while the companion relay is present.",
+        "dependencies": "Approved port-selection contract, existing implementation, and nine passing structural tests.",
+        "verification": "Run the focused collision test and the approved live check with the companion relay present; success requires distinct active ports and successful service startup. Return exact commands, observed ports, exit status, relevant output, changed paths, diff summary, confidence, and stopped_short status.",
+        "constraints": "Preserve unrelated changes, do not spawn workers, and stop if work crosses assigned paths or requires a product decision."
+      }
+    }
+  ],
+  "rationale": "The worker receipt and nine green structural tests do not satisfy either approved delivery criterion. Both remaining packages are authorized, executable, independent, disjoint in ownership, and supported by the available ledger capacity, so they should run concurrently. Milestone acceptance must wait for their runtime evidence.",
+  "user_message": "The milestone remains active: structural coverage is green, but both delivery checks are still unverified. I assigned the disjoint launch and port-collision packages in parallel and will review their runtime evidence before accepting the milestone."
+}

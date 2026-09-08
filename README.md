@@ -30,3 +30,9 @@ file ownership, verification gates, and root-owned adaptive sequencing.
 
 Copy a skill directory into `~/.codex/skills/`, or point Codex at its `SKILL.md` using
 the skill configuration supported by your client.
+
+## Verification
+
+Run deterministic checks with `python3 -m unittest discover -s tests -v`.
+The optional [behavioral decision checks](tests/behavioral/README.md) cover advisory
+thresholds, explicit budgets, worker failure, and incomplete milestones for both skills.

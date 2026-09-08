@@ -1,0 +1,51 @@
+{
+  "actions": [
+    {
+      "action": "record_budget_checkpoint",
+      "arguments": {
+        "hard_budget_tokens": 100000,
+        "observed_tokens_used": 100000,
+        "remaining_tokens": 0,
+        "source": "project ledger and guard",
+        "runtime_model": "unknown",
+        "runtime_effort": "unknown"
+      }
+    },
+    {
+      "action": "record_task_state",
+      "arguments": {
+        "task": "bounded staging verification package",
+        "state": "blocked_external",
+        "ownership": [
+          "tests/e2e/test_billing_export.py",
+          "docs/operations/billing-export-check.md"
+        ],
+        "reason": "Execution requires additional tokens, but the explicit hard budget is exhausted.",
+        "verification": "Run the export against the staging fixture, inspect the generated CSV, and record the outcome.",
+        "evidence": "No worker has started and no verification result exists."
+      }
+    },
+    {
+      "action": "record_milestone_state",
+      "arguments": {
+        "milestone": "CSV reconciliation change",
+        "state": "incomplete",
+        "accepted_receipts": [
+          "parser update",
+          "fixture refresh",
+          "reconciliation unit tests"
+        ],
+        "unmet_gate": "staging export verification",
+        "terminal_project_status": false
+      }
+    },
+    {
+      "action": "request_user_input",
+      "arguments": {
+        "question": "The 100000-token hard budget is fully used. What new hard token ceiling, if any, do you authorize so the remaining staging verification can run?"
+      }
+    }
+  ],
+  "rationale": "The explicit user budget is binding and has zero remaining allowance. Dispatching the ready verification package would exceed it, while marking the project complete would be unsupported because the staging gate has not run and the requested CSV behavior has not been accepted.",
+  "user_message": "The 100000-token hard budget is exhausted. Parser, fixture, and unit-test work is complete, but staging verification remains unstarted, so the CSV change is still incomplete. Please set a new hard token ceiling if you want me to run the final verification package."
+}

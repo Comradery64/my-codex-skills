@@ -1,0 +1,71 @@
+{
+  "actions": [
+    {
+      "action": "record_cost_checkpoint",
+      "arguments": {
+        "observed_total_tokens": 260000,
+        "sources": [
+          "latest orchestration guard",
+          "project ledger"
+        ],
+        "guard_exit_code": 20,
+        "legacy_status": "hard",
+        "interpretation": "Advisory routing review; no permission gate.",
+        "user_hard_budget": null,
+        "next_package_estimated_tokens": 6800,
+        "estimated_total_after_package": 266800,
+        "forecast_limits": "Excludes unestimated root review, possible remediation, remaining integration, and documentation. Full completion forecast is unknown.",
+        "root_worker_usage_breakdown": "unknown",
+        "root_runtime_model": "unknown",
+        "root_runtime_effort": "unknown",
+        "decision": "Continue the authorized goal using one bounded Terra worker."
+      }
+    },
+    {
+      "action": "record_task_board",
+      "arguments": {
+        "goal_status": "active",
+        "tasks": [
+          {
+            "id": "schema_normalization",
+            "status": "accepted",
+            "evidence": "Previously accepted receipt."
+          },
+          {
+            "id": "routing_integration_tests",
+            "status": "accepted",
+            "evidence": "Previously accepted receipt; retain its recorded test command for later integration verification."
+          },
+          {
+            "id": "classifier_contract",
+            "status": "ready",
+            "implementation_owner": "classifier_contract worker",
+            "acceptance_owner": "root",
+            "gate": "Approved field mapping implemented within owned paths; targeted unittest passes; root reviews relevant diff and evidence.",
+            "evidence": "No receipt yet."
+          },
+          {
+            "id": "internal_handoff_note",
+            "status": "blocked",
+            "depends_on": [
+              "classifier_contract"
+            ],
+            "deliverable": "Publish the authorized internal handoff note after contract acceptance and applicable integration verification."
+          }
+        ]
+      }
+    },
+    {
+      "action": "spawn_agent",
+      "arguments": {
+        "task_name": "classifier_contract",
+        "fork_turns": "none",
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "medium",
+        "message": "Implement the already-approved field mapping for the Northwind support-routing classifier contract. Use the existing project checkpoint and verified contract as the specification. Own edits exclusively to src/classifier/contract.py and tests/classifier/test_contract.py. Schema normalization and the routing integration test suite have accepted receipts. No other worker owns your paths, but you are not alone in the codebase: preserve others' changes and accommodate them. Do not modify documentation, expand the mapping contract, or spawn workers. Run python3 -m unittest tests.classifier.test_contract; success requires a passing command and implementation matching the approved mapping. Return a concise change summary, relevant diff or artifact references, verification output, confidence, and stopped_short status with any blocker. If verification fails, make at most one bounded repair within ownership, then return evidence and diagnosis. The package estimate is 6800 tokens, not a new hard budget. Root retains integration and acceptance."
+      }
+    }
+  ],
+  "rationale": "The default 250000-token threshold is advisory, and no user hard budget exists. The sole ready package has a stable contract, exclusive ownership, and an objective gate, making Terra at medium effort suitable. Documentation remains dependent on its result. Stop this trace at dispatch because no contract receipt has returned.",
+  "user_message": "Usage is 260,000 tokens. The checkpoint is advisory, so work continues within the authorized scope. I’m assigning the classifier contract package, estimated at 6,800 tokens; the handoff note follows after verification."
+}

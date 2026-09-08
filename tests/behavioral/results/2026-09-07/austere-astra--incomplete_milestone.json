@@ -1,0 +1,78 @@
+{
+  "actions": [
+    {
+      "action": "record_milestone_review",
+      "arguments": {
+        "milestone": "Lark device-sync delivery",
+        "status": "in_progress",
+        "evidence": "Nine structural tests pass; neither approved delivery criterion has runtime evidence.",
+        "worker_receipt_disposition": "Insufficient for delivery acceptance; edited launch-file diffs remain subject to root review.",
+        "criteria": [
+          {
+            "criterion": "Service launches with the real local runtime configuration",
+            "owner": "launch_verification",
+            "status": "unverified",
+            "gate": "Successful real launch with captured command, exit/readiness evidence, and focused test results"
+          },
+          {
+            "criterion": "Selected network port does not collide with the companion relay",
+            "owner": "port_collision",
+            "status": "unverified",
+            "gate": "Collision check passes with the companion relay running and the actual selected port recorded"
+          }
+        ],
+        "final_acceptance_owner": "root"
+      }
+    },
+    {
+      "action": "record_routing_checkpoint",
+      "arguments": {
+        "budget_evidence": "The supplied ledger has capacity for both ready packages.",
+        "observed_token_counts": "unknown",
+        "root_runtime_model": "unknown",
+        "root_runtime_effort": "unknown",
+        "decision": "Continue the approved work without requesting renewed permission."
+      }
+    },
+    {
+      "action": "dispatch_parallel_wave",
+      "arguments": {
+        "shared_rules": [
+          "Use the current Lark workspace and the approved contracts and owned paths recorded on the board.",
+          "You are not alone in the codebase; preserve other changes and edit only your package's owned files.",
+          "Do not spawn workers.",
+          "Keep scratch artifacts separate. Serialize checks that touch the same real service, relay, or port using exclusive ownership of that runtime state.",
+          "Return relevant diffs, exact commands, results, evidence paths, confidence, and stopped-short status. Never report an unexecuted check as passing.",
+          "Allow one bounded repair for an in-scope failure, then return evidence and diagnosis."
+        ],
+        "workers": [
+          {
+            "task_name": "launch_verification",
+            "model": "gpt-5.6-terra",
+            "reasoning_effort": "medium",
+            "effective_model_and_effort": "unknown",
+            "fork_turns": "none",
+            "selection_reason": "Bounded verification implementation with a clear executable acceptance gate.",
+            "ownership": "The board-assigned launch verification script and its focused test.",
+            "objective": "Complete the verification package and execute an actual service launch using the real local runtime configuration.",
+            "verification": "Run the focused test and real launch check; capture readiness and failures without exposing configuration secrets. Clean up only processes created by this task."
+          },
+          {
+            "task_name": "port_collision",
+            "model": "gpt-5.6-terra",
+            "reasoning_effort": "medium",
+            "effective_model_and_effort": "unknown",
+            "fork_turns": "none",
+            "selection_reason": "Approved configuration contract and focused behavioral check require ordinary implementation judgment.",
+            "ownership": "The board-assigned port-selection configuration and collision-check test.",
+            "objective": "Complete the package and verify that the actual selected service port does not collide with the running companion relay.",
+            "verification": "Run the focused test and live collision check; record relay presence, selected port, listener evidence, and results. Report any required changes outside owned paths."
+          }
+        ],
+        "return_dependency": "Root reviews returned evidence and relevant diffs, then evaluates integrated delivery before accepting the milestone."
+      }
+    }
+  ],
+  "rationale": "Structural tests do not establish the approved runtime outcomes. Both remaining packages are authorized, ready, independently owned, and funded. Parallel assignment is appropriate, with exclusive access for any shared runtime checks.",
+  "user_message": "The nine structural tests pass, but delivery remains unverified. I’m assigning the real launch and relay-port checks in parallel. The milestone stays open until both criteria pass and I review the integrated evidence."
+}

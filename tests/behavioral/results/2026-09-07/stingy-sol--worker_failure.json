@@ -1,0 +1,75 @@
+{
+  "actions": [
+    {
+      "action": "record_task_state",
+      "arguments": {
+        "task_id": "import_validation",
+        "state": "revision",
+        "reason": "The targeted gate still fails after the worker's single bounded repair; the new format check violates the approved legacy-code contract.",
+        "evidence": [
+          "test_rejects_malformed with WH-?? initially failed",
+          "test_accepts_legacy with WH-12 failed after repair"
+        ],
+        "ownership": "Transfer src/imports/validator.py and tests/imports/test_validator.py back to the Sol root; do not dispatch another remediation worker."
+      }
+    },
+    {
+      "action": "record_budget_checkpoint",
+      "arguments": {
+        "status": "ample capacity per supplied board",
+        "root_usage": "unknown",
+        "worker_usage": "unknown",
+        "aggregate_usage": "unknown",
+        "reason": "No session-log telemetry or billing-class breakdown is supplied."
+      }
+    },
+    {
+      "action": "inspect_import_evidence",
+      "arguments": {
+        "owner": "Sol root",
+        "files": [
+          "src/imports/validator.py",
+          "tests/imports/test_validator.py"
+        ],
+        "inspect": [
+          "current worker diff",
+          "supplier-code parsing path",
+          "focused test expectations"
+        ],
+        "contract": "Accept legacy prefixed codes such as WH-12 and modern numeric codes; reject punctuation-only suffixes such as WH-??.",
+        "constraint": "Do not broaden import rules or rewrite the parser.",
+        "next_gate": "Determine a minimal root-owned correction, then run the focused import tests. Stop this trace because inspection results have not returned."
+      }
+    },
+    {
+      "action": "dispatch_worker",
+      "arguments": {
+        "task_id": "dashboard_labels",
+        "fork_turns": "none",
+        "requested_model": "gpt-5.6-luna",
+        "requested_effort": "low",
+        "effective_model": "unknown",
+        "effective_effort": "unknown",
+        "reason": "Three approved display-name substitutions with focused objective tests are clear and mechanical.",
+        "ownership": [
+          "web/receiving/labels.ts",
+          "web/receiving/labels.test.ts"
+        ],
+        "assignment": "Replace only the three approved receiving-dashboard display names. Preserve all unrelated behavior and edits. Do not spawn workers or touch other paths.",
+        "verification": "Run the focused tests for web/receiving/labels.test.ts; success requires all focused tests to pass.",
+        "return_contract": {
+          "required": [
+            "changed paths",
+            "concise change summary",
+            "exact verification command and result",
+            "confidence",
+            "stopped_short status and reason"
+          ],
+          "repair_limit": "If verification fails, make at most one bounded repair within owned paths, then return partial evidence."
+        }
+      }
+    }
+  ],
+  "rationale": "The import worker has exhausted the one permitted remediation and its repair contradicted an explicit acceptance rule, so Sol must take ownership rather than rerouting the same slice. The dashboard package is independent, disjoint, authorized, and mechanically verifiable, so it can proceed concurrently on Luna at low effort while Sol gathers the import evidence needed for a minimal correction.",
+  "user_message": "The import task remains in revision after its bounded repair broke legacy-code acceptance; I’m taking that slice back for root diagnosis. The independent dashboard label update is proceeding with focused ownership and tests. Usage totals are unavailable, while the supplied board confirms ample remaining capacity."
+}

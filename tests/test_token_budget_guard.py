@@ -78,6 +78,45 @@ class GuardTests(unittest.TestCase):
                 self.assertEqual(result.returncode, 30)
                 self.assertEqual(body["status"], "unknown")
                 self.assertEqual(body["missing_threads"], ["child"])
+                self.assertEqual(body["thread_tokens"], {
+                    "child": None,
+                    "root": {"cache_write_input_tokens": 0, "cached_input_tokens": 0,
+                             "input_tokens": 100, "output_tokens": 0,
+                             "reasoning_output_tokens": 0, "total_tokens": 100},
+                })
+                self.assertEqual(body["root_tokens"]["total_tokens"], 100)
+                self.assertIsNone(body["worker_tokens"])
+
+    def test_tree_breakdown_includes_descendants_only_once(self):
+        for script in SCRIPTS:
+            with self.subTest(script=script), tempfile.TemporaryDirectory() as temp:
+                sessions = Path(temp) / "sessions"; sessions.mkdir()
+                write(sessions / "root.jsonl", "root", usage=(100,))
+                write(sessions / "child.jsonl", "child", "root", usage=(20,))
+                write(sessions / "grandchild.jsonl", "grandchild", "child", usage=(3,))
+                write(sessions / "unrelated.jsonl", "unrelated", usage=(999,))
+                result = self.run_guard(script, temp, "--session", str(sessions / "root.jsonl"),
+                                        "--tree")
+                body = json.loads(result.stdout)
+                self.assertEqual(body["root_tokens"]["total_tokens"], 100)
+                self.assertEqual(body["worker_tokens"]["total_tokens"], 23)
+                self.assertEqual(set(body["thread_tokens"]), {"root", "child", "grandchild"})
+                self.assertEqual(body["tokens"]["total_tokens"], 123)
+
+    def test_without_tree_reports_zero_worker_tokens(self):
+        for script in SCRIPTS:
+            with self.subTest(script=script), tempfile.TemporaryDirectory() as temp:
+                sessions = Path(temp) / "sessions"; sessions.mkdir()
+                write(sessions / "root.jsonl", "root", usage=(100,))
+                write(sessions / "child.jsonl", "child", "root", usage=(20,))
+                result = self.run_guard(script, temp, "--session", str(sessions / "root.jsonl"))
+                body = json.loads(result.stdout)
+                self.assertEqual(body["worker_tokens"], {
+                    "cache_write_input_tokens": 0, "cached_input_tokens": 0,
+                    "input_tokens": 0, "output_tokens": 0,
+                    "reasoning_output_tokens": 0, "total_tokens": 0,
+                })
+                self.assertEqual(set(body["thread_tokens"]), {"root"})
 
     def test_request_usage_fallback_and_thresholds(self):
         for script in SCRIPTS:

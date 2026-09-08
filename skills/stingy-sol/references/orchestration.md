@@ -12,7 +12,8 @@ Create only the detail justified by current evidence. Mark each task as:
 - `ready`: inputs and acceptance gate are known;
 - `blocked`: named dependencies must be accepted first;
 - `provisional`: likely work whose scope or route depends on new evidence;
-- `accepted`, `revision`, or `blocked_external` after review.
+- `accepted`, `revision`, or `blocked_external` after review. `blocked` records an
+  unmet dependency or external condition; it is never acceptance.
 
 The graph is a decision aid, not a promise to execute the initial ordering. After every
 worker return, the root reviews the evidence and may add, remove, merge, split, reorder,
@@ -48,7 +49,7 @@ fixed topology.
 # <outcome>
 
 Runtime: requested <root model/effort>; effective <value|unknown>
-Budget: `scripts/token_budget_guard.py --tree --json` -> <status and aggregate>
+Budget: `scripts/token_budget_guard.py --session <root-session.jsonl> --tree --json` -> <status and aggregate>
 
 | ID | Phase | State | Depends on | Model | Effort | Selection reason | Ownership | Contract | Gate | Evidence |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -57,10 +58,13 @@ Budget: `scripts/token_budget_guard.py --tree --json` -> <status and aggregate>
 | B1 | Build | blocked | R1,R2 | Terra | medium | bounded patch after synthesis | src/a | stable API | targeted test | — |
 ```
 
-Record phase entry and exit gates, exact dependencies, requested and effective model
-and effort, a one-line routing reason, owned paths or state, intended behavior,
-verification, status, and accepted evidence. Fully specify the next wave. Later tasks
-may stay provisional until findings make their contracts real.
+Map each acceptance criterion within a milestone to an owner, acceptance evidence, and
+current status. Record phase entry and exit gates, dependencies, requested and effective
+model and effort, a one-line routing reason, owned paths or state, intended behavior,
+verification, and accepted evidence. Fully specify the next wave. Later tasks may stay
+provisional until findings make their contracts real. Preserve an approved plan and
+continue ready work; replan only where evidence changes dependencies, contracts, or
+feasibility.
 
 ## Self-contained handoff
 
@@ -76,8 +80,16 @@ Verification: <command or evidence>; success is <observable condition>
 Scratch: <task-specific allowed location>
 Rules: do not spawn workers; preserve user changes; stop before crossing scope,
 permissions, safety, or destructive boundaries.
-Return (concise): artifact paths; findings or change summary; confidence; verification;
-stopped_short: true|false and reason.
+Practical allowance: complete the bounded discovery, implementation, and verification
+needed for the objective. If verification fails, make one bounded repair when it is
+within scope; then return the partial evidence and diagnosis rather than expanding the
+task.
+Return (concise): deliverable or artifact paths; findings or change summary;
+verification and evidence (including partial results); confidence; stopped_short:
+true|false and reason. A worker return ends that assignment only; the root decides
+whether the project continues, replans, escalates, or reports a blocker.
+The allowance does not stop other ready authorized work; actual budget, permission,
+and safety boundaries remain binding.
 ```
 
 Use `fork_turns="none"` with explicit `model` and `reasoning_effort` when the live
@@ -109,6 +121,8 @@ Before launching a parallel wave, assign every mutable path and shared resource 
 worker. Workers stop and report when the repository contradicts the handoff or required
 work crosses ownership. If one return changes a contract used by a still-running
 worker, the root steers or stops the affected task before accepting further writes.
+Reuse a related worker when its accumulated context remains useful; start a fresh one
+when that context has become costly or distracting relative to a concise handoff.
 
 ## Review, replan, and escalate
 
@@ -116,16 +130,19 @@ For each return, the root:
 
 1. checks scope and ownership;
 2. reopens critical evidence and inspects the relevant diff;
-3. runs or confirms the stated gate;
+3. confirms the evidence satisfies the stated gate; reruns affected checks when
+   integration changes their validity, evidence is stale or questionable, or risk warrants it;
 4. accepts the task, requests one targeted revision, or marks it blocked;
 5. updates assumptions, dependencies, routes, and the next parallel or waterfall wave.
 
 A failed gate, missing evidence, low confidence, stopped-short status, or objective
 mismatch triggers diagnosis. Keep the model and raise effort when depth was lacking;
 raise the model when capability was lacking; rewrite the task when the contract was
-unclear. Allow one bounded remediation, then replan, take root ownership, or report the
-blocker. Stop an obsolete worker before transferring its ownership. Never bypass a
-permission or safety refusal by changing models.
+unclear. Count a worker's attempted repair toward the single bounded remediation
+allowance; after another failure, replan, take root ownership, or report the blocker.
+Do not duplicate credible worker work or rerun broad validation merely because a
+worker returned. Stop an obsolete worker before transferring its ownership.
+Never bypass a permission or safety refusal by changing models.
 
 At phase gates, verify integrated behavior and decide whether the next phase is ready.
 At the end, account for every requested outcome and unresolved task. A collection of

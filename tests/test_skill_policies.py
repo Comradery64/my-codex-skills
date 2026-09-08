@@ -8,13 +8,13 @@ class SkillPolicyTests(unittest.TestCase):
     SKILLS = ("stingy-sol", "austere-astra")
     SHARED = ("model-catalog.md", "orchestration.md", "cost-model.md")
 
-    def test_both_skills_require_budget_gates_and_no_history(self):
+    def test_both_skills_require_budget_telemetry_and_no_history(self):
         for name in self.SKILLS:
             with self.subTest(skill=name):
                 text = (ROOT / "skills" / name / "SKILL.md").read_text()
                 normalized = " ".join(text.split())
                 for required in ("token_budget_guard.py", "100,000", "250,000",
-                                 "explicit user confirmation", "fork_turns=\"none\""):
+                                 "fork_turns=\"none\""):
                     self.assertIn(required, normalized)
                 for reference in self.SHARED:
                     self.assertIn(f"references/{reference}", text)

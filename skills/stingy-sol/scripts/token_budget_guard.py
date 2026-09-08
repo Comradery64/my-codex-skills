@@ -120,10 +120,18 @@ def main(argv=None):
                     selected_ids.add(child)
                     pending.append(child)
 
+    thread_tokens = {sid: data[sid]["usage"] for sid in sorted(selected_ids)}
+    root_tokens = data[selected]["usage"]
+    worker_ids = selected_ids - {selected}
+    worker_tokens = (None if any(not data[sid]["usage"] for sid in worker_ids)
+                     else {key: sum(data[sid]["usage"].get(key, 0) for sid in worker_ids)
+                           for key in CLASSES})
     missing = sorted(sid for sid in selected_ids if not data[sid]["usage"])
     if missing:
         return emit(args, {"status": "unknown", "session": selected,
                            "threads": len(selected_ids), "missing_threads": missing,
+                           "thread_tokens": thread_tokens, "root_tokens": root_tokens,
+                           "worker_tokens": worker_tokens,
                            "error": "one or more threads have no token usage records"}, 30)
 
     # Each session file reports cumulative usage for that thread. Sum one latest
@@ -139,6 +147,8 @@ def main(argv=None):
               "aggregate_source": (data[selected]["source"] if len(selected_ids) == 1
                                    else "sum(latest thread-local usage)"),
               "thread_sources": {sid: data[sid]["source"] for sid in sorted(selected_ids)},
+              "thread_tokens": thread_tokens, "root_tokens": root_tokens,
+              "worker_tokens": worker_tokens,
               "tokens": usage,
               "soft_limit": args.soft_limit, "hard_limit": args.hard_limit}
     return emit(args, result, 20 if status == "hard" else 10 if status == "soft" else 0)

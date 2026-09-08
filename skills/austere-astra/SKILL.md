@@ -15,7 +15,9 @@ lowering Astra's root effort, weakening the requested result, or accepting bad w
 Astra owns framing, scout questions, evidence synthesis, architecture, tradeoffs,
 phase boundaries, the evolving task graph, model and effort selection, integration,
 acceptance, replanning, final review, and the user-facing answer. Workers never make
-those project-level decisions and never delegate to other workers.
+those project-level decisions and never delegate to other workers. Under an authorized
+plan, Astra keeps planning, integration, and acceptance at the root while routing most
+bounded exploration, implementation, and test execution to suitable lower-cost workers.
 
 A skill cannot change the live root model or effort. Record requested and effective
 values when the runtime exposes them, otherwise record `unknown`. Do not claim an
@@ -39,31 +41,41 @@ the token guard.
 
 ## Adaptive execution
 
-1. Astra frames the outcome, constraints, unknowns, risks, and first evidence needs.
+1. When present, Astra uses the existing authorized plan as the source of scope and
+   acceptance; otherwise it frames the outcome, constraints, unknowns, risks, and
+   first evidence needs.
 2. Astra creates a provisional dependency graph and selects a model and effort for
    every ready task with a one-line reason.
 3. Astra runs independent, safe tasks concurrently when the expected time or context
    benefit exceeds coordination cost. It sequences dependent, overlapping, or
    shared-state work as a waterfall.
 4. After every return, Astra inspects the relevant evidence or diff, accepts or rejects
-   the task, updates dependencies and assumptions, and decides the next wave. The
-   initial plan is not a fixed execution schedule.
+   the task, updates dependencies and assumptions, and decides the next wave. Evidence
+   may change task ordering, grouping, or routing, but not the authorized plan's scope
+   or acceptance criteria without user direction.
 5. At each phase gate, Astra verifies integrated behavior and revises the remaining
    graph. Final acceptance covers the original outcome, not merely completed subtasks.
 
-Each worker owns one bounded task. Parallel writers require disjoint file ownership,
-stable contracts, isolated validation state, and independent acceptance. If any of
-those conditions stop being true, Astra serializes the work. For a plan-only request,
-stop after delivering the plan. Once implementation is authorized, internal task gates
-do not require repeated user permission.
+Delegate most bounded exploration, implementation, and test execution; Astra keeps
+project judgment, integration, and acceptance. Assign each worker a coherent
+deliverable with its verification, rather than splitting closely coupled fragments by
+role. Parallel writers require disjoint file ownership, stable contracts, isolated
+validation state, and independent acceptance. If these conditions fail, Astra
+serializes the work. Reuse a related worker when its context remains useful; reroute
+when its accumulated context is a burden. Astra diagnoses partial or stopped-short
+returns; a worker's practical allowance exhaustion alone does not stop other ready,
+authorized work. Keep handoffs lean and avoid duplicate exploration, unnecessary
+fan-out, repeated large context transfers, and automatic retry swarms. For a plan-only
+request, stop after delivering the plan. Once implementation is authorized, internal
+task gates and skill-default checkpoints do not require repeated user permission.
 
 ## Context and verification
 
 Use `fork_turns="none"` and a self-contained handoff. Keep raw exploration and logs in
 task-scoped scratch artifacts when allowed. Workers return concise paths, findings,
-confidence, verification results, and stopped-short status. Treat summaries as leads:
-Astra reopens critical evidence, inspects final diffs, reconciles conflicts, and runs
-the acceptance checks proportional to risk.
+confidence, verification results, and stopped-short status. Astra reviews focused
+evidence and relevant diffs; it does not replay worker exploration or tests unless an
+integration changed, evidence is invalid, or risk warrants it.
 
 Allow one targeted remediation after a failed gate, missing evidence, or capability
 failure. Astra diagnoses whether the problem is specification, environment, effort, or
@@ -73,21 +85,36 @@ takes ownership, or reports the blocker. Never create an automatic retry swarm.
 ## Cost checkpoints
 
 Before the first delegation, after each completed wave, and before a new phase, run
-`scripts/token_budget_guard.py --tree --json` from this skill directory when Codex
-session logs are available. Exit `10` is a soft checkpoint at 100,000 tokens: report
-observed usage, remaining hard-limit budget, and forecast. Exit `20` is a hard workflow
-checkpoint at 250,000 tokens: start no new phase or worker without explicit user
-confirmation. Exit `30` means aggregate usage is unavailable. The guard cannot stop an
-in-flight call and is not a platform spending cap.
+`scripts/token_budget_guard.py --session <root-session.jsonl> --tree --json` from this
+skill directory when Codex session logs are available. Select the actual current root
+session log, rather than relying on a newest-log default. Exit `10` at the default
+100,000-token checkpoint and exit `20` at the default 250,000-token checkpoint are
+advisory cost and routing reviews:
+report observed usage, forecast, and remaining user budget when one exists; then
+continue the authorized plan and its workers with the leanest suitable route. Exit `20`
+retains its legacy `hard` telemetry label, but it creates no permission gate. Exit `30`
+means aggregate usage is unavailable: report that uncertainty and continue
+conservatively. The guard cannot stop an in-flight call and is not a platform spending
+cap.
+
+An explicit user hard budget is binding and supersedes these defaults. Honor it exactly,
+reforecast against it, and never silently reset, reinterpret, or exceed it. Do not
+request renewed budget approval to continue the authorized plan unless it would cross
+that explicit hard budget. Treat material scope changes and other permission or safety
+boundaries separately.
 
 The target is 10–30% of a comparable all-Astra-xhigh run. Reforecast after every phase
 and before an expensive escalation. Reduce duplicate context, unnecessary fan-out, and
 oversized tasks when the forecast misses. Do not reduce authorized scope or spend more
-merely to reach the lower bound. Report observed, estimated, and unknown values
-separately.
+merely to reach the lower bound. For each accepted milestone, use the shared ledger to
+report available root versus worker usage, revisions, and coordination cost; distinguish
+observed, estimated, and unknown values. These are decision records, never numeric
+quotas or automated hard caps.
 
 ## Final acceptance
 
-Astra checks the original requirements, integrated behavior, accepted evidence,
-remaining risks, routing deviations, and cost status. Preserve these decisions across
-compaction and revalidate repository and task state when resuming.
+Astra maps every original acceptance criterion within each milestone to its owner, gate,
+evidence, and final status. Continue until each is verified or has a concrete blocker;
+a blocked item is never complete. Astra then checks integrated behavior, remaining
+risks, routing deviations, and cost status. Preserve these decisions across compaction
+and revalidate repository and task state when resuming.

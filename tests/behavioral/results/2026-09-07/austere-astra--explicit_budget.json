@@ -1,0 +1,57 @@
+{
+  "actions": [
+    {
+      "action": "record_budget_boundary",
+      "arguments": {
+        "source": "Supplied project ledger and guard result",
+        "hard_budget_tokens": 100000,
+        "observed_used_tokens": 100000,
+        "remaining_tokens": 0,
+        "additional_work_authorized": false,
+        "effective_root_model": "unknown",
+        "effective_root_effort": "unknown"
+      }
+    },
+    {
+      "action": "mark_task_blocked",
+      "arguments": {
+        "task": "Remaining CSV reconciliation verification",
+        "state": "blocked_external",
+        "reason": "Explicit user hard budget exhausted; verification requires additional token usage.",
+        "ownership": [
+          "tests/e2e/test_billing_export.py",
+          "docs/operations/billing-export-check.md"
+        ],
+        "pending_gate": "Run the export against the staging fixture, inspect the generated CSV, and record the outcome.",
+        "worker_started": false,
+        "verification_result": "unavailable"
+      }
+    },
+    {
+      "action": "record_project_status",
+      "arguments": {
+        "project": "Cedar billing export",
+        "status": "blocked",
+        "completed_receipts": [
+          "Parser update",
+          "Fixture refresh",
+          "Reconciliation unit tests"
+        ],
+        "remaining_work": "Staging export verification and root acceptance review",
+        "overall_acceptance": "pending",
+        "resume_condition": "Explicit user authorization of additional token budget",
+        "dispatch_further_work": false
+      }
+    },
+    {
+      "action": "request_budget_authorization",
+      "arguments": {
+        "question": "The 100,000-token hard budget is exhausted, and staging verification remains unfinished. What new total token budget do you authorize for the remaining verification and review?",
+        "await_response": true,
+        "while_user_unavailable": "Keep the project blocked; do not start verification or spend additional project tokens."
+      }
+    }
+  ],
+  "rationale": "The explicit user hard budget is binding even though the guard's default checkpoints are advisory. The ledger leaves no headroom for the ready verification package. Completed component receipts do not establish integrated CSV behavior, so the project must remain blocked and unaccepted until additional budget is explicitly authorized.",
+  "user_message": "The 100,000-token hard budget is exhausted. The parser, fixtures, and unit tests have completed receipts, but staging verification has not run. The project is blocked pending additional budget. What new total token budget do you authorize for the remaining verification and review?"
+}
