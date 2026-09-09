@@ -5,7 +5,9 @@ import hashlib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-CASES = ("advisory_threshold", "explicit_budget", "worker_failure", "incomplete_milestone")
+CASES = ("advisory_threshold", "explicit_budget", "worker_failure",
+         "incomplete_milestone", "unforecast_assignment", "renamed_repair",
+         "sparse_coverage", "austerity_correction")
 SKILLS = ("austere-astra", "stingy-sol")
 
 
@@ -17,7 +19,8 @@ def main():
     skill_dir = ROOT / "skills" / args.skill
     sources = [skill_dir / "SKILL.md", *(
         skill_dir / "references" / name
-        for name in ("model-catalog.md", "orchestration.md", "cost-model.md")
+        for name in ("model-catalog.md", "orchestration.md", "cost-model.md",
+                     "verification-contracts.md")
     ), ROOT / "tests" / "behavioral" / "cases" / f"{args.case}.md"]
     print("""You are the root orchestrator resuming the supplied project checkpoint.
 Apply the supplied skill and references to the scenario. All project state, usage,

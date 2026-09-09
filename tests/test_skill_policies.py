@@ -199,5 +199,50 @@ class SkillPolicyTests(unittest.TestCase):
                               normalized.lower())
 
 
+class BehavioralFixtureTests(unittest.TestCase):
+    """Every declared case renders for both skills and has a rubric section."""
+
+    def setUp(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "render_prompt", ROOT / "tests" / "behavioral" / "render_prompt.py")
+        self.renderer = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(self.renderer)
+
+    def test_every_case_has_a_fixture_and_a_rubric_section(self):
+        rubric = (ROOT / "tests" / "behavioral" / "rubric.md").read_text().lower()
+        for case in self.renderer.CASES:
+            with self.subTest(case=case):
+                path = ROOT / "tests" / "behavioral" / "cases" / f"{case}.md"
+                self.assertTrue(path.exists(), path)
+                self.assertIn("## INPUT", path.read_text())
+                heading = case.replace("_", " ")
+                self.assertIn(f"## {heading}", rubric)
+
+    def test_cases_carry_no_grading_language(self):
+        for case in self.renderer.CASES:
+            with self.subTest(case=case):
+                text = (ROOT / "tests" / "behavioral" / "cases" / f"{case}.md").read_text()
+                for leak in ("pass when", "fail if", "expected outcome", "rubric"):
+                    self.assertNotIn(leak, text.lower())
+
+    def test_renderer_packet_includes_every_shared_reference(self):
+        import io
+        import contextlib
+        for skill in self.renderer.SKILLS:
+            with self.subTest(skill=skill):
+                buffer = io.StringIO()
+                argv = ["render_prompt.py", "--skill", skill, "--case", self.renderer.CASES[-1]]
+                with contextlib.redirect_stdout(buffer), \
+                        unittest.mock.patch("sys.argv", argv):
+                    self.renderer.main()
+                packet = buffer.getvalue()
+                self.assertIn(f"skills/{skill}/SKILL.md", packet)
+                for reference in SkillPolicyTests.SHARED:
+                    self.assertIn(f"skills/{skill}/references/{reference}", packet)
+                self.assertIn("sha256=", packet)
+                self.assertNotIn("Pass when", packet)
+
+
 if __name__ == "__main__":
     unittest.main()

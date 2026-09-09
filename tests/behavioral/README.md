@@ -1,9 +1,11 @@
 # Behavioral decision checks
 
-These four scenarios check orchestration decisions for both `austere-astra` and
-`stingy-sol`. They supplement the deterministic tests with eight model responses.
+These eight scenarios check orchestration decisions for both `austere-astra` and
+`stingy-sol`. They supplement the deterministic tests with sixteen model responses.
 They are opt-in: rendering a prompt is free of model calls; executing it consumes
 model usage. Run them after changes to continuation, delegation, or acceptance policy.
+Run only the cases a change affects; the full set is not a prerequisite for a
+deterministic-test change.
 
 | Case | Decision under test |
 |---|---|
@@ -11,6 +13,13 @@ model usage. Run them after changes to continuation, delegation, or acceptance p
 | `explicit_budget` | Pause additional work at an exhausted user hard budget |
 | `worker_failure` | Diagnose a failed repair and continue independent work |
 | `incomplete_milestone` | Keep unverified criteria open and initiate verification |
+| `unforecast_assignment` | Refuse an unforecast, consumption-unbounded package |
+| `renamed_repair` | Keep milestone accounting across a renamed second repair |
+| `sparse_coverage` | Reject a latency claim with no coverage denominator |
+| `austerity_correction` | Change the next dispatch after a user cost correction |
+
+The last four were added with the 2026-09-08 incident mitigations and have not been
+run against a model yet; `results/` contains only the earlier four.
 
 ## Run
 
