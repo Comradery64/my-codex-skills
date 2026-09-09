@@ -1,0 +1,629 @@
+{
+  "cutoffs_utc": {
+    "before_correction": "2026-09-08T03:47:49.610Z",
+    "implementation_stop": "2026-09-08T08:26:53.072Z"
+  },
+  "note": "Distilled from the recorded 2026-09-08 incident: per-thread cumulative counters, roles, and parent shape only. Session UUIDs, filesystem paths, and transcript content are removed. Processed tokens are not dollars and not a weekly-allowance deduction.",
+  "role_totals_at_first_correction": {
+    "guardian": {
+      "cache_write_input_tokens": 0,
+      "cached_input_tokens": 1343488,
+      "input_tokens": 1502800,
+      "output_tokens": 3753,
+      "reasoning_output_tokens": 863,
+      "total_tokens": 1506553
+    },
+    "root": {
+      "cache_write_input_tokens": 0,
+      "cached_input_tokens": 4974080,
+      "input_tokens": 5099193,
+      "output_tokens": 14385,
+      "reasoning_output_tokens": 3429,
+      "total_tokens": 5113578
+    },
+    "worker": {
+      "cache_write_input_tokens": 0,
+      "cached_input_tokens": 2672128,
+      "input_tokens": 2805673,
+      "output_tokens": 14004,
+      "reasoning_output_tokens": 4691,
+      "total_tokens": 2819677
+    }
+  },
+  "role_totals_at_stop": {
+    "guardian": {
+      "cache_write_input_tokens": 0,
+      "cached_input_tokens": 27738880,
+      "input_tokens": 31309678,
+      "output_tokens": 42026,
+      "reasoning_output_tokens": 12042,
+      "total_tokens": 31351704
+    },
+    "root": {
+      "cache_write_input_tokens": 0,
+      "cached_input_tokens": 19655936,
+      "input_tokens": 19995689,
+      "output_tokens": 66145,
+      "reasoning_output_tokens": 24914,
+      "total_tokens": 20061834
+    },
+    "worker": {
+      "cache_write_input_tokens": 0,
+      "cached_input_tokens": 95843328,
+      "input_tokens": 98201494,
+      "output_tokens": 394912,
+      "reasoning_output_tokens": 132722,
+      "total_tokens": 98596406
+    }
+  },
+  "source": "docs/superpowers/reports/agent-work-dashboard/austere-astra-postmortem-20260908-evidence.json",
+  "thread_counts": {
+    "guardian": 14,
+    "root": 1,
+    "worker": 13
+  },
+  "threads": [
+    {
+      "agent_path": null,
+      "at_stop": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 19655936,
+        "input_tokens": 19995689,
+        "output_tokens": 66145,
+        "reasoning_output_tokens": 24914,
+        "total_tokens": 20061834
+      },
+      "before_correction": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 4974080,
+        "input_tokens": 5099193,
+        "output_tokens": 14385,
+        "reasoning_output_tokens": 3429,
+        "total_tokens": 5113578
+      },
+      "effort": "high",
+      "id": "root",
+      "model": "gpt-6-astra",
+      "parent": null,
+      "role": "root",
+      "usage_records": 198
+    },
+    {
+      "agent_path": null,
+      "at_stop": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 1159424,
+        "input_tokens": 1325708,
+        "output_tokens": 2447,
+        "reasoning_output_tokens": 866,
+        "total_tokens": 1328155
+      },
+      "before_correction": null,
+      "effort": "low",
+      "id": "g1",
+      "model": "codex-auto-review",
+      "parent": "w7",
+      "role": "guardian",
+      "usage_records": 27
+    },
+    {
+      "agent_path": null,
+      "at_stop": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 491520,
+        "input_tokens": 584564,
+        "output_tokens": 1501,
+        "reasoning_output_tokens": 354,
+        "total_tokens": 586065
+      },
+      "before_correction": null,
+      "effort": "low",
+      "id": "g2",
+      "model": "codex-auto-review",
+      "parent": "w11",
+      "role": "guardian",
+      "usage_records": 20
+    },
+    {
+      "agent_path": null,
+      "at_stop": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 12893952,
+        "input_tokens": 14965137,
+        "output_tokens": 12609,
+        "reasoning_output_tokens": 3108,
+        "total_tokens": 14977746
+      },
+      "before_correction": null,
+      "effort": "low",
+      "id": "g3",
+      "model": "codex-auto-review",
+      "parent": "w2",
+      "role": "guardian",
+      "usage_records": 121
+    },
+    {
+      "agent_path": null,
+      "at_stop": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 1167104,
+        "input_tokens": 1263388,
+        "output_tokens": 3133,
+        "reasoning_output_tokens": 1115,
+        "total_tokens": 1266521
+      },
+      "before_correction": null,
+      "effort": "low",
+      "id": "g4",
+      "model": "codex-auto-review",
+      "parent": "w4",
+      "role": "guardian",
+      "usage_records": 33
+    },
+    {
+      "agent_path": null,
+      "at_stop": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 1154816,
+        "input_tokens": 1246018,
+        "output_tokens": 2575,
+        "reasoning_output_tokens": 736,
+        "total_tokens": 1248593
+      },
+      "before_correction": null,
+      "effort": "low",
+      "id": "g5",
+      "model": "codex-auto-review",
+      "parent": "w5",
+      "role": "guardian",
+      "usage_records": 29
+    },
+    {
+      "agent_path": null,
+      "at_stop": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 3535616,
+        "input_tokens": 3701364,
+        "output_tokens": 4366,
+        "reasoning_output_tokens": 1198,
+        "total_tokens": 3705730
+      },
+      "before_correction": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 178688,
+        "input_tokens": 215140,
+        "output_tokens": 848,
+        "reasoning_output_tokens": 130,
+        "total_tokens": 215988
+      },
+      "effort": "low",
+      "id": "g6",
+      "model": "codex-auto-review",
+      "parent": "w1",
+      "role": "guardian",
+      "usage_records": 57
+    },
+    {
+      "agent_path": null,
+      "at_stop": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 1974784,
+        "input_tokens": 2249145,
+        "output_tokens": 3190,
+        "reasoning_output_tokens": 914,
+        "total_tokens": 2252335
+      },
+      "before_correction": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 962816,
+        "input_tokens": 1032012,
+        "output_tokens": 2134,
+        "reasoning_output_tokens": 551,
+        "total_tokens": 1034146
+      },
+      "effort": "low",
+      "id": "g7",
+      "model": "codex-auto-review",
+      "parent": "root",
+      "role": "guardian",
+      "usage_records": 38
+    },
+    {
+      "agent_path": null,
+      "at_stop": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 325632,
+        "input_tokens": 385715,
+        "output_tokens": 1386,
+        "reasoning_output_tokens": 424,
+        "total_tokens": 387101
+      },
+      "before_correction": null,
+      "effort": "low",
+      "id": "g8",
+      "model": "codex-auto-review",
+      "parent": "w6",
+      "role": "guardian",
+      "usage_records": 16
+    },
+    {
+      "agent_path": null,
+      "at_stop": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 1645312,
+        "input_tokens": 1751023,
+        "output_tokens": 2626,
+        "reasoning_output_tokens": 691,
+        "total_tokens": 1753649
+      },
+      "before_correction": null,
+      "effort": "low",
+      "id": "g9",
+      "model": "codex-auto-review",
+      "parent": "w10",
+      "role": "guardian",
+      "usage_records": 37
+    },
+    {
+      "agent_path": null,
+      "at_stop": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 352256,
+        "input_tokens": 429301,
+        "output_tokens": 1277,
+        "reasoning_output_tokens": 541,
+        "total_tokens": 430578
+      },
+      "before_correction": null,
+      "effort": "low",
+      "id": "g10",
+      "model": "codex-auto-review",
+      "parent": "w9",
+      "role": "guardian",
+      "usage_records": 12
+    },
+    {
+      "agent_path": null,
+      "at_stop": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 346112,
+        "input_tokens": 421632,
+        "output_tokens": 1350,
+        "reasoning_output_tokens": 410,
+        "total_tokens": 422982
+      },
+      "before_correction": null,
+      "effort": "low",
+      "id": "g11",
+      "model": "codex-auto-review",
+      "parent": "w3",
+      "role": "guardian",
+      "usage_records": 16
+    },
+    {
+      "agent_path": null,
+      "at_stop": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 201984,
+        "input_tokens": 255648,
+        "output_tokens": 771,
+        "reasoning_output_tokens": 182,
+        "total_tokens": 256419
+      },
+      "before_correction": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 201984,
+        "input_tokens": 255648,
+        "output_tokens": 771,
+        "reasoning_output_tokens": 182,
+        "total_tokens": 256419
+      },
+      "effort": "low",
+      "id": "g12",
+      "model": "codex-auto-review",
+      "parent": "w8",
+      "role": "guardian",
+      "usage_records": 11
+    },
+    {
+      "agent_path": null,
+      "at_stop": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 159232,
+        "input_tokens": 238269,
+        "output_tokens": 965,
+        "reasoning_output_tokens": 390,
+        "total_tokens": 239234
+      },
+      "before_correction": null,
+      "effort": "low",
+      "id": "g13",
+      "model": "codex-auto-review",
+      "parent": "w13",
+      "role": "guardian",
+      "usage_records": 10
+    },
+    {
+      "agent_path": null,
+      "at_stop": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 2331136,
+        "input_tokens": 2492766,
+        "output_tokens": 3830,
+        "reasoning_output_tokens": 1113,
+        "total_tokens": 2496596
+      },
+      "before_correction": null,
+      "effort": "low",
+      "id": "g14",
+      "model": "codex-auto-review",
+      "parent": "w12",
+      "role": "guardian",
+      "usage_records": 46
+    },
+    {
+      "agent_path": "/root/t2_ingestion",
+      "at_stop": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 13502976,
+        "input_tokens": 13681447,
+        "output_tokens": 49459,
+        "reasoning_output_tokens": 18399,
+        "total_tokens": 13730906
+      },
+      "before_correction": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 703232,
+        "input_tokens": 768892,
+        "output_tokens": 4663,
+        "reasoning_output_tokens": 1792,
+        "total_tokens": 773555
+      },
+      "effort": "high",
+      "id": "w1",
+      "model": "gpt-5.6-sol",
+      "parent": "root",
+      "role": "worker",
+      "usage_records": 108
+    },
+    {
+      "agent_path": "/root/t4_observer_gate",
+      "at_stop": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 31715968,
+        "input_tokens": 32381754,
+        "output_tokens": 79340,
+        "reasoning_output_tokens": 30273,
+        "total_tokens": 32461094
+      },
+      "before_correction": null,
+      "effort": "high",
+      "id": "w2",
+      "model": "gpt-5.6-terra",
+      "parent": "root",
+      "role": "worker",
+      "usage_records": 275
+    },
+    {
+      "agent_path": "/root/t3a_files",
+      "at_stop": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 1844224,
+        "input_tokens": 1944332,
+        "output_tokens": 16229,
+        "reasoning_output_tokens": 4329,
+        "total_tokens": 1960561
+      },
+      "before_correction": null,
+      "effort": "high",
+      "id": "w3",
+      "model": "gpt-5.6-terra",
+      "parent": "root",
+      "role": "worker",
+      "usage_records": 28
+    },
+    {
+      "agent_path": "/root/t3a_api",
+      "at_stop": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 4703488,
+        "input_tokens": 4833994,
+        "output_tokens": 25467,
+        "reasoning_output_tokens": 4178,
+        "total_tokens": 4859461
+      },
+      "before_correction": null,
+      "effort": "high",
+      "id": "w4",
+      "model": "gpt-5.6-terra",
+      "parent": "root",
+      "role": "worker",
+      "usage_records": 51
+    },
+    {
+      "agent_path": "/root/t3a_integrity",
+      "at_stop": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 5226240,
+        "input_tokens": 5358270,
+        "output_tokens": 33581,
+        "reasoning_output_tokens": 11044,
+        "total_tokens": 5391851
+      },
+      "before_correction": null,
+      "effort": "high",
+      "id": "w5",
+      "model": "gpt-5.6-sol",
+      "parent": "root",
+      "role": "worker",
+      "usage_records": 50
+    },
+    {
+      "agent_path": "/root/t4_excerpt_repair",
+      "at_stop": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 2085120,
+        "input_tokens": 2175817,
+        "output_tokens": 12232,
+        "reasoning_output_tokens": 4788,
+        "total_tokens": 2188049
+      },
+      "before_correction": null,
+      "effort": "high",
+      "id": "w6",
+      "model": "gpt-5.6-terra",
+      "parent": "root",
+      "role": "worker",
+      "usage_records": 27
+    },
+    {
+      "agent_path": "/root/t3b_inbox",
+      "at_stop": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 6866432,
+        "input_tokens": 7036645,
+        "output_tokens": 29696,
+        "reasoning_output_tokens": 6041,
+        "total_tokens": 7066341
+      },
+      "before_correction": null,
+      "effort": "high",
+      "id": "w7",
+      "model": "gpt-5.6-terra",
+      "parent": "root",
+      "role": "worker",
+      "usage_records": 62
+    },
+    {
+      "agent_path": "/root/t1_baseline",
+      "at_stop": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 1968896,
+        "input_tokens": 2036781,
+        "output_tokens": 9341,
+        "reasoning_output_tokens": 2899,
+        "total_tokens": 2046122
+      },
+      "before_correction": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 1968896,
+        "input_tokens": 2036781,
+        "output_tokens": 9341,
+        "reasoning_output_tokens": 2899,
+        "total_tokens": 2046122
+      },
+      "effort": "high",
+      "id": "w8",
+      "model": "gpt-5.6-sol",
+      "parent": "root",
+      "role": "worker",
+      "usage_records": 42
+    },
+    {
+      "agent_path": "/root/t4_board_repair",
+      "at_stop": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 2257152,
+        "input_tokens": 2447940,
+        "output_tokens": 18869,
+        "reasoning_output_tokens": 4242,
+        "total_tokens": 2466809
+      },
+      "before_correction": null,
+      "effort": "medium",
+      "id": "w9",
+      "model": "gpt-5.6-terra",
+      "parent": "root",
+      "role": "worker",
+      "usage_records": 35
+    },
+    {
+      "agent_path": "/root/t3b_observer_route",
+      "at_stop": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 8584448,
+        "input_tokens": 8770444,
+        "output_tokens": 32760,
+        "reasoning_output_tokens": 13536,
+        "total_tokens": 8803204
+      },
+      "before_correction": null,
+      "effort": "high",
+      "id": "w10",
+      "model": "gpt-5.6-terra",
+      "parent": "root",
+      "role": "worker",
+      "usage_records": 67
+    },
+    {
+      "agent_path": "/root/t4_codex_watcher_repair",
+      "at_stop": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 4078080,
+        "input_tokens": 4238250,
+        "output_tokens": 19229,
+        "reasoning_output_tokens": 8921,
+        "total_tokens": 4257479
+      },
+      "before_correction": null,
+      "effort": "high",
+      "id": "w11",
+      "model": "gpt-5.6-terra",
+      "parent": "root",
+      "role": "worker",
+      "usage_records": 42
+    },
+    {
+      "agent_path": "/root/t5_managed_foundation",
+      "at_stop": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 11116928,
+        "input_tokens": 11290356,
+        "output_tokens": 46109,
+        "reasoning_output_tokens": 15682,
+        "total_tokens": 11336465
+      },
+      "before_correction": null,
+      "effort": "high",
+      "id": "w12",
+      "model": "gpt-5.6-sol",
+      "parent": "root",
+      "role": "worker",
+      "usage_records": 86
+    },
+    {
+      "agent_path": "/root/t6a_managed_host_api",
+      "at_stop": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 1893376,
+        "input_tokens": 2005464,
+        "output_tokens": 22600,
+        "reasoning_output_tokens": 8390,
+        "total_tokens": 2028064
+      },
+      "before_correction": null,
+      "effort": "high",
+      "id": "w13",
+      "model": "gpt-5.6-sol",
+      "parent": "root",
+      "role": "worker",
+      "usage_records": 21
+    }
+  ],
+  "totals_at_first_correction": {
+    "cache_write_input_tokens": 0,
+    "cached_input_tokens": 8989696,
+    "input_tokens": 9407666,
+    "output_tokens": 32142,
+    "reasoning_output_tokens": 8983,
+    "total_tokens": 9439808
+  },
+  "totals_at_stop": {
+    "cache_write_input_tokens": 0,
+    "cached_input_tokens": 143238144,
+    "input_tokens": 149506861,
+    "output_tokens": 503083,
+    "reasoning_output_tokens": 169678,
+    "total_tokens": 150009944
+  }
+}
