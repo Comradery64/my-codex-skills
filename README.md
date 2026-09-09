@@ -14,6 +14,7 @@ evidence changes, selects every worker's model and effort, and reviews each resu
 - [Model catalog](./skills/austere-astra/references/model-catalog.md)
 - [Adaptive orchestration](./skills/austere-astra/references/orchestration.md)
 - [Cost model](./skills/austere-astra/references/cost-model.md)
+- [Verification contracts](./skills/austere-astra/references/verification-contracts.md)
 
 ### [Stingy Sol](./skills/stingy-sol)
 
@@ -25,6 +26,7 @@ file ownership, verification gates, and root-owned adaptive sequencing.
 - [Model catalog](./skills/stingy-sol/references/model-catalog.md)
 - [Adaptive orchestration](./skills/stingy-sol/references/orchestration.md)
 - [Cost model](./skills/stingy-sol/references/cost-model.md)
+- [Verification contracts](./skills/stingy-sol/references/verification-contracts.md)
 
 ## Install
 
@@ -35,4 +37,6 @@ the skill configuration supported by your client.
 
 Run deterministic checks with `python3 -m unittest discover -s tests -v`.
 The optional [behavioral decision checks](tests/behavioral/README.md) cover advisory
-thresholds, explicit budgets, worker failure, and incomplete milestones for both skills.
+thresholds, explicit budgets, worker failure, incomplete milestones, unforecast
+assignments, renamed repairs, sparse measurement coverage, and the first austerity
+correction, for both skills.

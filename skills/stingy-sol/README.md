@@ -12,6 +12,7 @@ with one agent.
 - [Model catalog](./references/model-catalog.md)
 - [Adaptive orchestration](./references/orchestration.md)
 - [Cost model](./references/cost-model.md)
+- [Verification contracts](./references/verification-contracts.md)
 
 Do not combine it with Ultra or another proactive exhaustive-delegation policy; this
 skill supplies a bounded delegation policy of its own.

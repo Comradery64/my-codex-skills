@@ -64,3 +64,23 @@ These are defaults, not quotas. Improve an underspecified task before gambling o
 cheaper model. Raise effort when the worker needed more depth; raise model tier when
 the task exceeded its capability. Reconsider the remaining routes whenever returned
 evidence changes assumptions, dependencies, risk, or verifiability.
+
+## Choose model and effort separately
+
+Model tier answers "can it do this at all"; effort answers "how much reasoning does
+this instance need". Deciding them together is what turns a whole run expensive.
+
+- Semantic tracing and ordinary bounded patches start at Terra with ordinary effort.
+- Known-command execution is a direct tool call, or a Luna assignment at low effort
+  when it needs its own context. Running a fixed command is not a reasoning task.
+- Sol or high effort requires a task-specific coupling or correctness reason, recorded
+  in one line on the board. High effort is never inherited: a fixed-command fixture run
+  does not become high-effort because the worker that diagnosed the bug was.
+- Once diagnosis is complete and the remaining work is mechanical, select the cheapest
+  sufficient continuation. That includes spawning no new agent at all when spawn and
+  handoff overhead would exceed the benefit.
+
+Record a rationale for every high-effort assignment. An audit where nearly every
+worker requested high effort, including the long-running verification worker, is
+evidence of unexamined routing rather than caution. None of this imposes model quotas
+or forces work to be fragmented to hit a routing rule.
